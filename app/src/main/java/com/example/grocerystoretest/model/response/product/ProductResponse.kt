@@ -1,4 +1,4 @@
-package com.example.grocerystoretest.dto.response.product
+package com.example.grocerystoretest.model.response.product
 
 data class ProductResponse(
     val id: Int,

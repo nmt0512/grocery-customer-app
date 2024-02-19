@@ -8,9 +8,9 @@ import com.example.grocerystoretest.R
 import com.example.grocerystoretest.adapter.RecyclerViewProductAdapter
 import com.example.grocerystoretest.base.BaseActivity
 import com.example.grocerystoretest.databinding.ActivityProductListBinding
-import com.example.grocerystoretest.dto.response.BaseResponse
-import com.example.grocerystoretest.dto.response.product.ProductListResponse
-import com.example.grocerystoretest.dto.response.product.ProductResponse
+import com.example.grocerystoretest.model.response.BaseResponse
+import com.example.grocerystoretest.model.response.product.ProductListResponse
+import com.example.grocerystoretest.model.response.product.ProductResponse
 import com.example.grocerystoretest.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -18,12 +18,13 @@ import retrofit2.Response
 
 class ProductListActivity : BaseActivity<ActivityProductListBinding>() {
 
+    private val productPagingResponseList = mutableListOf<ProductResponse>()
+
     private var categoryId = 0
     private val pageSize = 8
     private var pageNumber = 1
-    private val productPagingResponseList = ArrayList<ProductResponse>()
 
-    private var isAbleFetchMore = true
+    private var isAbleToFetchMore = true
 
     override fun getContentLayout(): Int {
         return R.layout.activity_product_list
@@ -42,7 +43,7 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>() {
 
     override fun initListener() {
         binding.nsRvProduct.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (isAbleFetchMore) {
+            if (isAbleToFetchMore) {
                 if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
                     pageNumber++
                     binding.pbLoading.visibility = View.VISIBLE
@@ -88,14 +89,14 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>() {
                     ) {
                         Toast.makeText(
                             this@ProductListActivity,
-                            "Fail to fetch API",
+                            "Fail to fetch data",
                             Toast.LENGTH_SHORT
                         )
                             .show()
                     }
 
                     fun disableFetchMore() {
-                        isAbleFetchMore = false
+                        isAbleToFetchMore = false
                         binding.pbLoading.visibility = View.GONE
                     }
                 })

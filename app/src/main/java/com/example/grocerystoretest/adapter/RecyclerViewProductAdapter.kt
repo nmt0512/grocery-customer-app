@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.grocerystoretest.R
 import com.example.grocerystoretest.databinding.ItemProductBinding
-import com.example.grocerystoretest.dto.response.product.ProductResponse
+import com.example.grocerystoretest.model.response.product.ProductResponse
 
 class RecyclerViewProductAdapter(
     private val context: Context,

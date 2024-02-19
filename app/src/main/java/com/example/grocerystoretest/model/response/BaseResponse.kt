@@ -1,4 +1,4 @@
-package com.example.grocerystoretest.dto.response
+package com.example.grocerystoretest.model.response
 
 data class BaseResponse<T>(
     val success: Boolean,

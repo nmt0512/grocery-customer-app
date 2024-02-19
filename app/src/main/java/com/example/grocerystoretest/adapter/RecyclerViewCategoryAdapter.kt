@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.grocerystoretest.R
 import com.example.grocerystoretest.databinding.ItemCategoryBinding
-import com.example.grocerystoretest.model.Category
+import com.example.grocerystoretest.model.response.category.CategoryResponse
 import com.example.grocerystoretest.view.ProductListActivity
 
 class RecyclerViewCategoryAdapter(
     private val context: Context,
-    private val categoryList: List<Category>
+    private val categoryList: List<CategoryResponse>
 ) :
     RecyclerView.Adapter<RecyclerViewCategoryAdapter.CategoryViewHolder>() {
     private lateinit var itemCategoryBinding: ItemCategoryBinding

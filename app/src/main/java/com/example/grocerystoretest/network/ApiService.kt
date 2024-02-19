@@ -1,8 +1,8 @@
 package com.example.grocerystoretest.network
 
-import com.example.grocerystoretest.dto.response.BaseResponse
-import com.example.grocerystoretest.dto.response.category.CategoryListResponse
-import com.example.grocerystoretest.dto.response.product.ProductListResponse
+import com.example.grocerystoretest.model.response.BaseResponse
+import com.example.grocerystoretest.model.response.category.CategoryListResponse
+import com.example.grocerystoretest.model.response.product.ProductListResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
