@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
     android:background="@drawable/bg_item_product"
     android:orientation="vertical">
 
@@ -20,8 +21,8 @@
 
             <ImageView
                 android:id="@+id/img_product"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="110dp"
+                android:layout_height="110dp"
                 android:contentDescription="productImage" />
         </androidx.cardview.widget.CardView>
     </LinearLayout>
@@ -38,7 +39,7 @@
             android:ellipsize="end"
             android:gravity="center_horizontal"
             android:lines="2"
-            android:padding="5dp"
+            android:padding="3dp"
             android:text="Name" />
 
         <TextView
@@ -48,15 +49,17 @@
             android:gravity="center_horizontal"
             android:text="Price"
             android:textColor="@color/primary_color"
+            android:textSize="12sp"
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btnAddToCart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_margin="5dp"
-            android:text="Thêm vào giỏ" />
+            android:lines="1"
+            android:text="Thêm vào giỏ"
+            android:textSize="11sp" />
     </LinearLayout>
 
 </LinearLayout>

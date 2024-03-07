@@ -1,65 +1,51 @@
 package com.example.grocerystoretest.view
 
-import androidx.fragment.app.Fragment
+import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import com.example.grocerystoretest.R
 import com.example.grocerystoretest.base.BaseActivity
 import com.example.grocerystoretest.databinding.ActivityMainBinding
+import com.example.grocerystoretest.model.request.auth.LoginRequest
+import com.example.grocerystoretest.utils.ApplicationPreference
+import com.example.grocerystoretest.viewmodel.LoginViewModel
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
-    private lateinit var homeFragment: HomeFragment
-    private lateinit var billFragment: BillFragment
-    private lateinit var cartFragment: CartFragment
-    private lateinit var accountFragment: AccountFragment
+    private lateinit var loginViewModel: LoginViewModel
 
     override fun getContentLayout(): Int {
         return R.layout.activity_main
     }
 
     override fun initView() {
-        homeFragment = HomeFragment()
-        billFragment = BillFragment()
-        cartFragment = CartFragment()
-        accountFragment = AccountFragment()
-
-        binding.bottomNavigationBar.selectedItemId = R.id.item_home
-        loadFragment(homeFragment)
+        loginViewModel = LoginViewModel(this)
+        val savedLoginRequest = ApplicationPreference.getInstance(this)?.getLoginRequest()
+        if (savedLoginRequest == LoginRequest()) {
+            Handler(Looper.getMainLooper()).postDelayed({
+                startActivity(Intent(this, LoginActivity::class.java))
+                finishAffinity()
+            }, 1500)
+        } else {
+            Handler(Looper.getMainLooper()).postDelayed({
+                loginViewModel.login(savedLoginRequest?.phoneNumber!!, savedLoginRequest.password!!)
+                    .observe(this) {
+                        if (it) {
+                            startActivity(Intent(this, HomeActivity::class.java))
+                        } else {
+                            startActivity(Intent(this, LoginActivity::class.java))
+                        }
+                        finishAffinity()
+                    }
+            }, 500)
+        }
     }
 
     override fun initListener() {
-        binding.bottomNavigationBar.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.item_home -> {
-                    loadFragment(homeFragment)
-                    true
-                }
 
-                R.id.item_cart -> {
-                    loadFragment(cartFragment)
-                    true
-                }
-
-                R.id.item_bill -> {
-                    loadFragment(billFragment)
-                    true
-                }
-
-                R.id.item_account -> {
-                    loadFragment(accountFragment)
-                    true
-                }
-
-                else -> {
-                    false
-                }
-            }
-        }
     }
 
-    private fun loadFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction().apply {
-            replace(R.id.frame_layout, fragment)
-            commit()
-        }
+    override fun observeData() {
+
     }
 }

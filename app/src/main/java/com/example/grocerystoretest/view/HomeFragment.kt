@@ -18,7 +18,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun initView() {
-        categoryViewModel = CategoryViewModel()
+        categoryViewModel = CategoryViewModel(this.requireContext())
 
         val inAnimation = AnimationUtils.loadAnimation(activity, R.anim.slide_in_right)
         val outAnimation = AnimationUtils.loadAnimation(activity, R.anim.slide_out_left)
@@ -31,6 +31,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
         binding.rvCategory.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvRecommendedProduct.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvBestSellingProduct.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
     }
 
     override fun initListener() {
@@ -38,15 +42,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun observeLiveData() {
-        categoryViewModel.getCategoryResponseList().observe(this) {
+        categoryViewModel.getCategoryResponseList()
+        categoryViewModel.categoryResponseListLiveData.observe(this) {
             if (it != null && it.isNotEmpty()) {
-                binding.rvCategory.adapter =
-                    activity?.let { activity -> RecyclerViewCategoryAdapter(activity, it) }
+                binding.rvCategory.adapter = RecyclerViewCategoryAdapter(it)
             } else {
                 Toast.makeText(activity, "Failed to fetch data", Toast.LENGTH_SHORT).show()
             }
             loadingDialog?.hide()
         }
+
     }
 
 }

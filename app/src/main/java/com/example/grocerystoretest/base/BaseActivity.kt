@@ -31,7 +31,10 @@ abstract class BaseActivity<BINDING : ViewDataBinding> :
         loadingDialog = setupProgressDialog()
         initView()
         initListener()
+        observeData()
     }
+
+    abstract fun observeData()
 
     abstract fun getContentLayout(): Int
 

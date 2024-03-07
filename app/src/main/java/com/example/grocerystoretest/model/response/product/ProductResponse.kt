@@ -6,5 +6,6 @@ data class ProductResponse(
     val code: String,
     val description: String,
     val unitPrice: Int,
+    val quantity: Int,
     val images: MutableList<String>
 )

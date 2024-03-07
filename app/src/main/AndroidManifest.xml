@@ -19,6 +19,12 @@
             android:name=".view.ProductListActivity"
             android:exported="false" />
         <activity
+            android:name=".view.HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.MainActivity"
             android:exported="true">
             <intent-filter>

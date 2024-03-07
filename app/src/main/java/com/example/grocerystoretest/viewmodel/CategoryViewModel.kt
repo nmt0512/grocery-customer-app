@@ -1,5 +1,6 @@
 package com.example.grocerystoretest.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.grocerystoretest.model.response.BaseResponse
@@ -10,12 +11,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class CategoryViewModel : ViewModel() {
+class CategoryViewModel(context: Context) : ViewModel() {
 
-    private val categoryResponseListLiveData = MutableLiveData<List<CategoryResponse>>()
+    private val apiService = RetrofitClient.getInstance(context)
+    val categoryResponseListLiveData = MutableLiveData<List<CategoryResponse>>()
 
-    fun getCategoryResponseList(): MutableLiveData<List<CategoryResponse>> {
-        RetrofitClient.instance
+    fun getCategoryResponseList() {
+        apiService
             .getAllCategory()
             .enqueue(object : Callback<BaseResponse<CategoryListResponse>> {
                 override fun onResponse(
@@ -31,7 +33,6 @@ class CategoryViewModel : ViewModel() {
                 ) {
                 }
             })
-        return categoryResponseListLiveData
     }
 
 }
