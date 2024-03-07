@@ -1,5 +1,7 @@
 package com.example.grocerystoretest.adapter
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -36,6 +38,9 @@ class RecyclerViewCartAdapter(
 
         fun bind(cartResponse: CartResponse, position: Int) {
             val productResponse = cartResponse.product
+            if (position == 0) {
+                binding.root.background = ColorDrawable(Color.TRANSPARENT)
+            }
             if (productResponse.images.isNotEmpty()) {
                 Glide.with(binding.root)
                     .load(productResponse.images[0])
