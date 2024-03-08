@@ -17,8 +17,9 @@ class LoginViewModel(context: Context) : ViewModel() {
     private val apiService = RetrofitClient.getInstance(context)
     private val applicationPreference = ApplicationPreference.getInstance(context)
 
-    fun login(phoneNumber: String, password: String): MutableLiveData<Boolean> {
-        val isSuccessfullyLoggedIn = MutableLiveData<Boolean>()
+    val isSuccessfullyLoggedIn = MutableLiveData<Boolean>()
+
+    fun login(phoneNumber: String, password: String) {
         val loginRequest = LoginRequest(phoneNumber, password)
         apiService
             .login(loginRequest)
@@ -44,7 +45,6 @@ class LoginViewModel(context: Context) : ViewModel() {
                 }
 
             })
-        return isSuccessfullyLoggedIn
     }
 
 }

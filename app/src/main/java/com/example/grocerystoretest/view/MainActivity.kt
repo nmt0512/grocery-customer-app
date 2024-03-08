@@ -29,14 +29,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         } else {
             Handler(Looper.getMainLooper()).postDelayed({
                 loginViewModel.login(savedLoginRequest?.phoneNumber!!, savedLoginRequest.password!!)
-                    .observe(this) {
-                        if (it) {
-                            startActivity(Intent(this, HomeActivity::class.java))
-                        } else {
-                            startActivity(Intent(this, LoginActivity::class.java))
-                        }
-                        finishAffinity()
-                    }
             }, 500)
         }
     }
@@ -46,6 +38,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun observeData() {
-
+        loginViewModel.isSuccessfullyLoggedIn.observe(this) {
+            if (it) {
+                startActivity(Intent(this, HomeActivity::class.java))
+            } else {
+                startActivity(Intent(this, LoginActivity::class.java))
+            }
+            finishAffinity()
+        }
     }
 }

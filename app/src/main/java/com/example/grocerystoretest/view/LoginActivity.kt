@@ -24,24 +24,24 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             loadingDialog?.show()
             val phoneNumber = binding.txtPhoneNumber.text.toString()
             val password = binding.txtPassword.text.toString()
-            loginViewModel.login(phoneNumber, password).observe(this) {
-                if (it) {
-                    startActivity(Intent(this, HomeActivity::class.java))
-                    loadingDialog?.hide()
-                    finishAffinity()
-                } else {
-                    Toast.makeText(
-                        this,
-                        "Tên đăng nhập hoặc mật khẩu không chính xác",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                loadingDialog?.hide()
-            }
+            loginViewModel.login(phoneNumber, password)
         }
     }
 
     override fun observeData() {
-
+        loginViewModel.isSuccessfullyLoggedIn.observe(this) {
+            if (it) {
+                startActivity(Intent(this, HomeActivity::class.java))
+                loadingDialog?.hide()
+                finishAffinity()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Tên đăng nhập hoặc mật khẩu không chính xác",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            loadingDialog?.hide()
+        }
     }
 }
