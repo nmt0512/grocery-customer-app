@@ -43,13 +43,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun observeLiveData() {
         categoryViewModel.getCategoryResponseList()
+        if (categoryViewModel.categoryResponseListLiveData.value != null) {
+            loadingDialog?.dismiss()
+        }
         categoryViewModel.categoryResponseListLiveData.observe(this) {
             if (it != null && it.isNotEmpty()) {
                 binding.rvCategory.adapter = RecyclerViewCategoryAdapter(it)
             } else {
                 Toast.makeText(activity, "Failed to fetch data", Toast.LENGTH_SHORT).show()
             }
-            loadingDialog?.hide()
+            loadingDialog?.dismiss()
         }
 
     }

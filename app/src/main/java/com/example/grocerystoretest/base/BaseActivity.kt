@@ -34,13 +34,13 @@ abstract class BaseActivity<BINDING : ViewDataBinding> :
         observeData()
     }
 
-    abstract fun observeData()
-
     abstract fun getContentLayout(): Int
 
     abstract fun initView()
 
     abstract fun initListener()
+
+    abstract fun observeData()
 
     fun showError(errorMessage: String) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()

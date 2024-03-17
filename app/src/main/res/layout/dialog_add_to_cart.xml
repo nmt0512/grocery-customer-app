@@ -30,8 +30,7 @@
                     android:layout_marginTop="20dp"
                     android:lines="3"
                     android:text="product_name"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/txtProductPrice"
@@ -41,8 +40,7 @@
                     android:lines="1"
                     android:text="product_price"
                     android:textColor="@color/primary_color"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -64,26 +62,24 @@
 
                 <Button
                     android:id="@+id/btnMinusQuantity"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:background="@drawable/ic_minus_quantity"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/ic_minus_quantity" />
 
                 <TextView
                     android:id="@+id/txtQuantity"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginHorizontal="20dp"
                     android:layout_marginTop="3dp"
                     android:text="0"
-                    android:textSize="20sp"
-                    android:layout_gravity="center_vertical"/>
+                    android:textSize="16sp" />
 
                 <Button
                     android:id="@+id/btnPlusQuantity"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:background="@drawable/ic_plus_quantity"
                     app:layout_constraintStart_toEndOf="@+id/txtQuantity"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -92,7 +88,8 @@
             <Button
                 android:id="@+id/btnAddToCart"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
+                android:textSize="12sp"
                 android:layout_marginTop="1dp"
                 android:layout_marginEnd="35dp"
                 android:text="Thêm vào giỏ"

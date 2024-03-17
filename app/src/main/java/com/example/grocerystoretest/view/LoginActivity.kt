@@ -32,7 +32,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         loginViewModel.isSuccessfullyLoggedIn.observe(this) {
             if (it) {
                 startActivity(Intent(this, HomeActivity::class.java))
-                loadingDialog?.hide()
+                loadingDialog?.dismiss()
                 finishAffinity()
             } else {
                 Toast.makeText(
@@ -41,7 +41,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
                     Toast.LENGTH_SHORT
                 ).show()
             }
-            loadingDialog?.hide()
+            loadingDialog?.dismiss()
         }
     }
 }

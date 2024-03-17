@@ -1,8 +1,7 @@
 package com.example.grocerystoretest.adapter
 
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -39,7 +38,7 @@ class RecyclerViewCartAdapter(
         fun bind(cartResponse: CartResponse, position: Int) {
             val productResponse = cartResponse.product
             if (position == 0) {
-                binding.root.background = ColorDrawable(Color.TRANSPARENT)
+                binding.root.background = null
             }
             if (productResponse.images.isNotEmpty()) {
                 Glide.with(binding.root)
@@ -52,19 +51,47 @@ class RecyclerViewCartAdapter(
                 NumberConverterUtil.getProductPriceStringByPrice(productResponse.unitPrice)
             binding.txtQuantity.text = cartResponse.quantity.toString()
 
-            binding.checkboxCartItem.isChecked =
-                cartFragment.isCheckedCartItemSetContains(cartResponse.id)
+            if (productResponse.quantity == 0) {
+                binding.root.background = null
+                binding.root.alpha = 0.5F
+                binding.root.isEnabled = false
+                binding.checkboxCartItem.visibility = View.GONE
+                binding.txtOutOfStock.visibility = View.VISIBLE
+            } else {
+                binding.checkboxCartItem.isChecked =
+                    cartFragment.isCheckedCartItemSetContains(cartResponse.id)
 
-            binding.btnMinusQuantity.setOnClickListener {
-                binding.root.isClickable = false
-                val oldQuantity = binding.txtQuantity.text.toString().toInt()
-                if (oldQuantity > 1) {
-                    val newQuantity = oldQuantity - 1
+                binding.btnMinusQuantity.setOnClickListener {
+                    binding.root.isClickable = false
+                    val oldQuantity = binding.txtQuantity.text.toString().toInt()
+                    if (oldQuantity > 1) {
+                        val newQuantity = oldQuantity - 1
+                        if (binding.checkboxCartItem.isChecked) {
+                            cartFragment.updateCartQuantity(
+                                position,
+                                UpdateCartQuantityRequest(cartResponse.id, newQuantity),
+                                false,
+                                productResponse.unitPrice
+                            )
+                        } else {
+                            cartFragment.updateCartQuantity(
+                                position,
+                                UpdateCartQuantityRequest(cartResponse.id, newQuantity),
+                                null,
+                                null
+                            )
+                        }
+                    }
+                }
+
+                binding.btnPlusQuantity.setOnClickListener {
+                    binding.root.isClickable = false
+                    val newQuantity = binding.txtQuantity.text.toString().toInt() + 1
                     if (binding.checkboxCartItem.isChecked) {
                         cartFragment.updateCartQuantity(
                             position,
                             UpdateCartQuantityRequest(cartResponse.id, newQuantity),
-                            false,
+                            true,
                             productResponse.unitPrice
                         )
                     } else {
@@ -76,37 +103,17 @@ class RecyclerViewCartAdapter(
                         )
                     }
                 }
-            }
 
-            binding.btnPlusQuantity.setOnClickListener {
-                binding.root.isClickable = false
-                val newQuantity = binding.txtQuantity.text.toString().toInt() + 1
-                if (binding.checkboxCartItem.isChecked) {
-                    cartFragment.updateCartQuantity(
-                        position,
-                        UpdateCartQuantityRequest(cartResponse.id, newQuantity),
-                        true,
-                        productResponse.unitPrice
-                    )
-                } else {
-                    cartFragment.updateCartQuantity(
-                        position,
-                        UpdateCartQuantityRequest(cartResponse.id, newQuantity),
-                        null,
-                        null
-                    )
-                }
-            }
-
-            binding.checkboxCartItem.setOnClickListener {
-                val updatingMoney =
-                    binding.txtQuantity.text.toString().toInt().times(productResponse.unitPrice)
-                if (binding.checkboxCartItem.isChecked) {
-                    cartFragment.addToCheckedCartItemSet(cartResponse.id)
-                    cartFragment.plusTotalPrice(updatingMoney)
-                } else {
-                    cartFragment.removeFromCheckedCartItemSet(cartResponse.id)
-                    cartFragment.minusTotalPrice(updatingMoney)
+                binding.checkboxCartItem.setOnClickListener {
+                    val updatingMoney =
+                        binding.txtQuantity.text.toString().toInt().times(productResponse.unitPrice)
+                    if (binding.checkboxCartItem.isChecked) {
+                        cartFragment.addToCheckedCartItemSet(cartResponse.id)
+                        cartFragment.plusTotalPrice(updatingMoney)
+                    } else {
+                        cartFragment.removeFromCheckedCartItemSet(cartResponse.id)
+                        cartFragment.minusTotalPrice(updatingMoney)
+                    }
                 }
             }
 

@@ -1,5 +1,6 @@
 package com.example.grocerystoretest.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -9,6 +10,7 @@ import com.example.grocerystoretest.databinding.ItemProductBinding
 import com.example.grocerystoretest.model.response.product.ProductResponse
 import com.example.grocerystoretest.utils.NumberConverterUtil
 import com.example.grocerystoretest.view.IProductListActivity
+import com.example.grocerystoretest.view.ProductDetailActivity
 
 class RecyclerViewProductAdapter(
     private val productListActivity: IProductListActivity,
@@ -50,6 +52,22 @@ class RecyclerViewProductAdapter(
             binding.btnAddToCart.setOnClickListener {
                 productListActivity.showBottomSheetDialog(productResponse)
             }
+
+            binding.imgProduct.setOnClickListener {
+                startProductDetailActivity(productResponse.id)
+            }
+            binding.txtName.setOnClickListener {
+                startProductDetailActivity(productResponse.id)
+            }
+            binding.txtPrice.setOnClickListener {
+                startProductDetailActivity(productResponse.id)
+            }
+        }
+
+        private fun startProductDetailActivity(productId: Int) {
+            val intent = Intent(binding.root.context, ProductDetailActivity::class.java)
+            intent.putExtra("productId", productId)
+            binding.root.context.startActivity(intent)
         }
     }
 }

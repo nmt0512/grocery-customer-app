@@ -1,23 +1,31 @@
 package com.example.grocerystoretest.network
 
 import com.example.grocerystoretest.model.request.auth.LoginRequest
+import com.example.grocerystoretest.model.request.bill.CreateBillRequest
 import com.example.grocerystoretest.model.request.cart.AddToCartRequest
 import com.example.grocerystoretest.model.request.cart.UpdateCartQuantityRequest
+import com.example.grocerystoretest.model.request.payment.StripeConfirmPaymentRequest
+import com.example.grocerystoretest.model.request.product.GetAvailableProductListRequest
+import com.example.grocerystoretest.model.request.product.GetAvailableProductListResponse
 import com.example.grocerystoretest.model.response.BaseResponse
 import com.example.grocerystoretest.model.response.auth.LoginResponse
 import com.example.grocerystoretest.model.response.auth.UserInfoResponse
+import com.example.grocerystoretest.model.response.bill.BillResponse
 import com.example.grocerystoretest.model.response.cart.AddToCartResponse
 import com.example.grocerystoretest.model.response.cart.DeleteCartByIdListResponse
 import com.example.grocerystoretest.model.response.cart.GetAllItemInCartResponse
 import com.example.grocerystoretest.model.response.cart.UpdateCartQuantityResponse
 import com.example.grocerystoretest.model.response.category.CategoryListResponse
+import com.example.grocerystoretest.model.response.payment.StripeConfirmPaymentResponse
 import com.example.grocerystoretest.model.response.product.ProductListResponse
+import com.example.grocerystoretest.model.response.product.ProductResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -49,4 +57,15 @@ interface ApiService {
     @DELETE("cart")
     fun deleteCartByIdList(@Query("idList") idList: List<String>): Call<BaseResponse<DeleteCartByIdListResponse>>
 
+    @GET("product/{id}")
+    fun getProductById(@Path("id") productId: Int): Call<BaseResponse<ProductResponse>>
+
+    @POST("product/available")
+    fun getAvailableProductList(@Body getAvailableProductListRequest: GetAvailableProductListRequest): Call<BaseResponse<GetAvailableProductListResponse>>
+
+    @POST("payment/stripe")
+    fun confirmPaymentStripe(@Body stripeConfirmPaymentRequest: StripeConfirmPaymentRequest): Call<BaseResponse<StripeConfirmPaymentResponse>>
+
+    @POST("bill")
+    fun createBill(@Body createBillRequest: CreateBillRequest): Call<BaseResponse<BillResponse>>
 }

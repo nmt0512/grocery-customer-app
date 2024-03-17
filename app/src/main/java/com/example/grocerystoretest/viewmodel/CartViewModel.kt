@@ -29,7 +29,12 @@ class CartViewModel(context: Context) {
                     call: Call<BaseResponse<AddToCartResponse>>,
                     response: Response<BaseResponse<AddToCartResponse>>
                 ) {
-                    addToCartResponseLiveData.value = response.body()?.data!!
+                    if (response.body() != null) {
+                        addToCartResponseLiveData.value = response.body()!!.data!!
+                    } else {
+                        addToCartResponseLiveData.value = AddToCartResponse()
+                    }
+
                 }
 
                 override fun onFailure(call: Call<BaseResponse<AddToCartResponse>>, t: Throwable) {

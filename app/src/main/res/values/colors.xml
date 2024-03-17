@@ -2,6 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="primary_color">#C62828</color>
+    <color name="primary_color">#a83232</color>
+    <color name="bland_primary_color">#ffde91</color>
+    <color name="color_bg_tiny_pink">#ffd5ad</color>
     <color name="grey">#b0b0b0</color>
 </resources>

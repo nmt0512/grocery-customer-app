@@ -89,7 +89,7 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), IProduct
                 } else {
                     Toast.makeText(
                         this,
-                        "Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng",
+                        "Sản phẩm đã hết hàng",
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -109,7 +109,7 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), IProduct
                         productResponseList.addAll(it)
                         binding.rvProduct.adapter =
                             RecyclerViewProductAdapter(this, productResponseList)
-                        loadingDialog?.hide()
+                        loadingDialog?.dismiss()
                         if (it.size < pageSize) {
                             disableFetchMore()
                         }
