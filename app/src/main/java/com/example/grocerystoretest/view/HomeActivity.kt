@@ -4,8 +4,11 @@ import androidx.fragment.app.Fragment
 import com.example.grocerystoretest.R
 import com.example.grocerystoretest.base.BaseActivity
 import com.example.grocerystoretest.databinding.ActivityHomeBinding
+import com.example.grocerystoretest.viewmodel.UserInfoViewModel
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
+
+    private lateinit var userInfoViewModel: UserInfoViewModel
 
     private lateinit var homeFragment: HomeFragment
     private lateinit var billFragment: BillFragment
@@ -17,6 +20,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     }
 
     override fun initView() {
+        userInfoViewModel = UserInfoViewModel(this)
+        userInfoViewModel.getUserInfo()
+
         homeFragment = HomeFragment()
         billFragment = BillFragment()
         cartFragment = CartFragment()

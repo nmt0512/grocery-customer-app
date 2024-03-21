@@ -18,6 +18,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun initView() {
+        loadingDialog?.show()
         categoryViewModel = CategoryViewModel(this.requireContext())
 
         val inAnimation = AnimationUtils.loadAnimation(activity, R.anim.slide_in_right)

@@ -26,6 +26,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
             val password = binding.txtPassword.text.toString()
             loginViewModel.login(phoneNumber, password)
         }
+
+        binding.txtSignUp.setOnClickListener {
+            val intent = Intent(this, RegisterActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun observeData() {

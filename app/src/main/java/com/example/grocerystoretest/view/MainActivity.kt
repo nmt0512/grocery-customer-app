@@ -19,6 +19,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun initView() {
+        ApplicationPreference.getInstance(this)?.logout()
         loginViewModel = LoginViewModel(this)
         val savedLoginRequest = ApplicationPreference.getInstance(this)?.getLoginRequest()
         if (savedLoginRequest == LoginRequest()) {

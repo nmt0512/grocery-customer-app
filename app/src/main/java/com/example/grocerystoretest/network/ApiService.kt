@@ -1,6 +1,9 @@
 package com.example.grocerystoretest.network
 
+import com.example.grocerystoretest.enums.BillStatus
 import com.example.grocerystoretest.model.request.auth.LoginRequest
+import com.example.grocerystoretest.model.request.auth.RegisterCustomerRequest
+import com.example.grocerystoretest.model.request.auth.UpdateUserInfoRequest
 import com.example.grocerystoretest.model.request.bill.CreateBillRequest
 import com.example.grocerystoretest.model.request.cart.AddToCartRequest
 import com.example.grocerystoretest.model.request.cart.UpdateCartQuantityRequest
@@ -9,8 +12,10 @@ import com.example.grocerystoretest.model.request.product.GetAvailableProductLis
 import com.example.grocerystoretest.model.request.product.GetAvailableProductListResponse
 import com.example.grocerystoretest.model.response.BaseResponse
 import com.example.grocerystoretest.model.response.auth.LoginResponse
+import com.example.grocerystoretest.model.response.auth.RegisterCustomerResponse
 import com.example.grocerystoretest.model.response.auth.UserInfoResponse
-import com.example.grocerystoretest.model.response.bill.BillResponse
+import com.example.grocerystoretest.model.response.bill.CreateBillResponse
+import com.example.grocerystoretest.model.response.bill.GetAllBillResponse
 import com.example.grocerystoretest.model.response.cart.AddToCartResponse
 import com.example.grocerystoretest.model.response.cart.DeleteCartByIdListResponse
 import com.example.grocerystoretest.model.response.cart.GetAllItemInCartResponse
@@ -42,8 +47,14 @@ interface ApiService {
     @POST("auth/login")
     fun login(@Body loginRequest: LoginRequest): Call<BaseResponse<LoginResponse>>
 
-    @GET("userInfo")
+    @GET("auth/userInfo")
     fun getUserInfo(): Call<BaseResponse<UserInfoResponse>>
+
+    @PUT("auth/userInfo")
+    fun updateUserInfo(@Body updateUserInfoRequest: UpdateUserInfoRequest): Call<BaseResponse<UserInfoResponse>>
+
+    @POST("auth/registerCustomer")
+    fun registerCustomer(@Body registerCustomerRequest: RegisterCustomerRequest): Call<BaseResponse<RegisterCustomerResponse>>
 
     @POST("cart/add")
     fun addToCart(@Body addToCartRequest: AddToCartRequest): Call<BaseResponse<AddToCartResponse>>
@@ -67,5 +78,8 @@ interface ApiService {
     fun confirmPaymentStripe(@Body stripeConfirmPaymentRequest: StripeConfirmPaymentRequest): Call<BaseResponse<StripeConfirmPaymentResponse>>
 
     @POST("bill")
-    fun createBill(@Body createBillRequest: CreateBillRequest): Call<BaseResponse<BillResponse>>
+    fun createBill(@Body createBillRequest: CreateBillRequest): Call<BaseResponse<CreateBillResponse>>
+
+    @GET("bill/all")
+    fun getAllBill(@Query("status") billStatus: BillStatus?): Call<BaseResponse<GetAllBillResponse>>
 }

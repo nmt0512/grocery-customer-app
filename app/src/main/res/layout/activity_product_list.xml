@@ -15,7 +15,7 @@
             android:padding="8dp"
             android:text="Chọn sản phẩm"
             android:textColor="@color/white"
-            android:textSize="18dp" />
+            android:textSize="18sp" />
 
         <androidx.core.widget.NestedScrollView
             android:id="@+id/ns_rv_product"

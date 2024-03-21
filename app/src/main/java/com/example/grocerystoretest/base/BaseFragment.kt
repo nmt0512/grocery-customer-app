@@ -42,18 +42,7 @@ abstract class BaseFragment<BINDING : ViewDataBinding> :
         super.onViewCreated(view, savedInstanceState)
         initView()
         initListener()
-        loadingDialog?.show()
         observeLiveData()
-    }
-
-    override fun onDestroy() {
-        loadingDialog?.dismiss()
-        super.onDestroy()
-    }
-
-    override fun onStop() {
-        loadingDialog?.dismiss()
-        super.onStop()
     }
 
     abstract fun getContentLayout(): Int

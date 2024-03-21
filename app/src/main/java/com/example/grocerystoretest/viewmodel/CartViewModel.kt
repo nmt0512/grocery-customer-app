@@ -52,7 +52,11 @@ class CartViewModel(context: Context) {
                     call: Call<BaseResponse<GetAllItemInCartResponse>>,
                     response: Response<BaseResponse<GetAllItemInCartResponse>>
                 ) {
-                    cartResponseListLiveData.value = response.body()?.data?.cartResponseList
+                    if (response.body() != null) {
+                        cartResponseListLiveData.value = response.body()?.data?.cartResponseList
+                    } else {
+                        cartResponseListLiveData.value = mutableListOf()
+                    }
                 }
 
                 override fun onFailure(
