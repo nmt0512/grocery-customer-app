@@ -1,5 +1,6 @@
 package com.example.grocerystoretest.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,7 +9,8 @@ import com.bumptech.glide.Glide
 import com.example.grocerystoretest.R
 import com.example.grocerystoretest.databinding.ItemBillBinding
 import com.example.grocerystoretest.model.response.bill.BillResponse
-import com.example.grocerystoretest.utils.NumberConverterUtil
+import com.example.grocerystoretest.view.BillDetailActivity
+import com.google.gson.Gson
 
 class RecyclerViewBillListAdapter(private val billResponseList: List<BillResponse>) :
     RecyclerView.Adapter<RecyclerViewBillListAdapter.BillListViewHolder>() {
@@ -25,16 +27,13 @@ class RecyclerViewBillListAdapter(private val billResponseList: List<BillRespons
     }
 
     override fun onBindViewHolder(holder: BillListViewHolder, position: Int) {
-        holder.bind(billResponseList[position], position)
+        holder.bind(billResponseList[position])
     }
 
     inner class BillListViewHolder(val binding: ItemBillBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(billResponse: BillResponse, position: Int) {
-            if (position == 0) {
-                binding.root.background = null
-            }
+        fun bind(billResponse: BillResponse) {
             val billItemList = billResponse.billItems!!
             Glide.with(binding.root)
                 .load(billItemList[0].productResponse.images[0])
@@ -56,8 +55,13 @@ class RecyclerViewBillListAdapter(private val billResponseList: List<BillRespons
                 }
             }
 
-            binding.txtTotalPrice.text = "${NumberConverterUtil.getProductPriceStringByPrice(billResponse.totalPrice!!)}"
-            binding.txtBillStatus.text = billResponse.status?.description
+            binding.txtPickUpTime.text = "Lấy hàng: ${billResponse.pickUpTime}"
+
+            binding.root.setOnClickListener {
+                val intent = Intent(binding.root.context, BillDetailActivity::class.java)
+                intent.putExtra("billResponse", Gson().toJson(billResponse))
+                binding.root.context.startActivity(intent)
+            }
         }
     }
 }

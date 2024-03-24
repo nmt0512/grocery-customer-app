@@ -88,6 +88,9 @@ class OrderActivity : BaseActivity<ActivityOrderBinding>() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun initListener() {
+        binding.btnBack.setOnClickListener {
+            this.onBackPressedDispatcher.onBackPressed()
+        }
         binding.layoutPaymentMethod.setOnClickListener {
             bottomSheetDialog.show()
         }

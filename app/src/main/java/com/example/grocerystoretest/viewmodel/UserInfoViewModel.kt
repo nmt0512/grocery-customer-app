@@ -4,9 +4,11 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.grocerystoretest.model.User
+import com.example.grocerystoretest.model.request.auth.ChangePasswordRequest
 import com.example.grocerystoretest.model.request.auth.RegisterCustomerRequest
 import com.example.grocerystoretest.model.request.auth.UpdateUserInfoRequest
 import com.example.grocerystoretest.model.response.BaseResponse
+import com.example.grocerystoretest.model.response.auth.ChangePasswordResponse
 import com.example.grocerystoretest.model.response.auth.RegisterCustomerResponse
 import com.example.grocerystoretest.model.response.auth.UserInfoResponse
 import com.example.grocerystoretest.network.RetrofitClient
@@ -99,5 +101,28 @@ class UserInfoViewModel(context: Context) : ViewModel() {
 
             })
         return userInfoResponseLiveData
+    }
+
+    fun changePassword(changePasswordRequest: ChangePasswordRequest): MutableLiveData<Boolean> {
+        val isSuccessLiveData = MutableLiveData<Boolean>()
+        apiService
+            .changePassword(changePasswordRequest)
+            .enqueue(object : Callback<BaseResponse<ChangePasswordResponse>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<ChangePasswordResponse>>,
+                    response: Response<BaseResponse<ChangePasswordResponse>>
+                ) {
+                    isSuccessLiveData.value = response.body() != null
+                }
+
+                override fun onFailure(
+                    call: Call<BaseResponse<ChangePasswordResponse>>,
+                    t: Throwable
+                ) {
+                    isSuccessLiveData.value = false
+                }
+
+            })
+        return isSuccessLiveData
     }
 }

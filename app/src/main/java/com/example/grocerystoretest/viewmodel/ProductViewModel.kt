@@ -17,6 +17,7 @@ class ProductViewModel(context: Context) : ViewModel() {
 
     private val apiService = RetrofitClient.getInstance(context)
     val productDetailLiveData = MutableLiveData<ProductResponse>()
+    val searchProductResponseListLiveData = MutableLiveData<List<ProductResponse>>()
 
     fun getProductResponseListByCategoryIdPaging(
         categoryId: Int,
@@ -83,5 +84,30 @@ class ProductViewModel(context: Context) : ViewModel() {
 
             })
         return getAvailableProductListResponseLiveData
+    }
+
+    fun searchProduct(query: String) {
+        apiService
+            .searchProduct(query)
+            .enqueue(object : Callback<BaseResponse<ProductListResponse>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<ProductListResponse>>,
+                    response: Response<BaseResponse<ProductListResponse>>
+                ) {
+                    if (response.body() != null) {
+                        searchProductResponseListLiveData.value = response.body()!!.data?.content
+                    } else {
+                        searchProductResponseListLiveData.value = mutableListOf()
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<BaseResponse<ProductListResponse>>,
+                    t: Throwable
+                ) {
+                    searchProductResponseListLiveData.value = mutableListOf()
+                }
+
+            })
     }
 }

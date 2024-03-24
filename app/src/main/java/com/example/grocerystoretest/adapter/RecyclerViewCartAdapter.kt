@@ -37,9 +37,6 @@ class RecyclerViewCartAdapter(
 
         fun bind(cartResponse: CartResponse, position: Int) {
             val productResponse = cartResponse.product
-            if (position == 0) {
-                binding.root.background = null
-            }
             if (productResponse.images.isNotEmpty()) {
                 Glide.with(binding.root)
                     .load(productResponse.images[0])

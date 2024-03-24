@@ -58,6 +58,11 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>() {
         binding.btnLogout.setOnClickListener {
             logoutConfirmDialog.show()
         }
+
+        binding.layoutChangePassword.setOnClickListener {
+            val intent = Intent(this.requireContext(), ChangePasswordActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     override fun observeLiveData() {

@@ -37,6 +37,9 @@ class UpdateUserInfoActivity : BaseActivity<ActivityUpdateUserInfoBinding>() {
     }
 
     override fun initListener() {
+        binding.btnBack.setOnClickListener {
+            this.onBackPressedDispatcher.onBackPressed()
+        }
         binding.btnSaveInfo.setOnClickListener {
             if (isValidated()) {
                 val updateUserInfoRequest = UpdateUserInfoRequest(

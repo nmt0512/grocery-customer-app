@@ -1,17 +1,25 @@
 package com.example.grocerystoretest.view
 
+import android.view.View
 import android.view.animation.AnimationUtils
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.grocerystoretest.R
 import com.example.grocerystoretest.adapter.RecyclerViewCategoryAdapter
+import com.example.grocerystoretest.adapter.RecyclerViewSearchProductAdapter
 import com.example.grocerystoretest.base.BaseFragment
 import com.example.grocerystoretest.databinding.FragmentHomeBinding
+import com.example.grocerystoretest.model.response.product.ProductResponse
 import com.example.grocerystoretest.viewmodel.CategoryViewModel
+import com.example.grocerystoretest.viewmodel.ProductViewModel
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private lateinit var categoryViewModel: CategoryViewModel
+    private lateinit var productViewModel: ProductViewModel
+
+    private var productResponseList = mutableListOf<ProductResponse>()
 
     override fun getContentLayout(): Int {
         return R.layout.fragment_home
@@ -20,15 +28,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun initView() {
         loadingDialog?.show()
         categoryViewModel = CategoryViewModel(this.requireContext())
+        productViewModel = ProductViewModel(this.requireContext())
 
         val inAnimation = AnimationUtils.loadAnimation(activity, R.anim.slide_in_right)
         val outAnimation = AnimationUtils.loadAnimation(activity, R.anim.slide_out_left)
         binding.viewFlipper.inAnimation = inAnimation
         binding.viewFlipper.outAnimation = outAnimation
-
-        binding.searchView.setOnClickListener {
-            binding.searchView.isIconified = false
-        }
 
         binding.rvCategory.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
@@ -36,10 +41,43 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         binding.rvBestSellingProduct.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+
+        binding.rvSearchProduct.layoutManager =
+            LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+
+        binding.rvSearchProduct.adapter = RecyclerViewSearchProductAdapter(productResponseList)
     }
 
     override fun initListener() {
+        binding.searchView.setOnClickListener {
+            (this.activity as HomeActivity).binding.bottomNavigationBar.visibility = View.GONE
+            binding.searchView.isIconified = false
+            binding.nscSearchProduct.visibility = View.VISIBLE
+        }
+        binding.searchView.setOnCloseListener {
+            (this.activity as HomeActivity).binding.bottomNavigationBar.visibility = View.VISIBLE
+            binding.nscSearchProduct.visibility = View.GONE
+            productResponseList.clear()
+            binding.rvSearchProduct.adapter?.notifyDataSetChanged()
+            return@setOnCloseListener false
+        }
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
 
+            override fun onQueryTextChange(newText: String?): Boolean {
+                newText?.let { query ->
+                    productViewModel.searchProduct(query)
+                    productViewModel.searchProductResponseListLiveData.observe(this@HomeFragment) {
+                        productResponseList.clear()
+                        productResponseList.addAll(it)
+                        binding.rvSearchProduct.adapter?.notifyDataSetChanged()
+                    }
+                }
+                return false
+            }
+        })
     }
 
     override fun observeLiveData() {

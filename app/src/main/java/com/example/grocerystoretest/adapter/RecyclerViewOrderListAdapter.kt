@@ -24,17 +24,14 @@ class RecyclerViewOrderListAdapter(private val cartResponseList: List<CartRespon
     }
 
     override fun onBindViewHolder(holder: OrderListViewHolder, position: Int) {
-        holder.bind(cartResponseList[position], position)
+        holder.bind(cartResponseList[position])
     }
 
     inner class OrderListViewHolder(val binding: ItemOrderBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(cartResponse: CartResponse, position: Int) {
+        fun bind(cartResponse: CartResponse) {
             val productResponse = cartResponse.product
-            if (position == 0) {
-                binding.root.background = null
-            }
             if (productResponse.images.isNotEmpty()) {
                 Glide.with(binding.root)
                     .load(productResponse.images[0])

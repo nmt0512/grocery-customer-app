@@ -1,6 +1,7 @@
 package com.example.grocerystoretest.network
 
 import com.example.grocerystoretest.enums.BillStatus
+import com.example.grocerystoretest.model.request.auth.ChangePasswordRequest
 import com.example.grocerystoretest.model.request.auth.LoginRequest
 import com.example.grocerystoretest.model.request.auth.RegisterCustomerRequest
 import com.example.grocerystoretest.model.request.auth.UpdateUserInfoRequest
@@ -11,6 +12,7 @@ import com.example.grocerystoretest.model.request.payment.StripeConfirmPaymentRe
 import com.example.grocerystoretest.model.request.product.GetAvailableProductListRequest
 import com.example.grocerystoretest.model.request.product.GetAvailableProductListResponse
 import com.example.grocerystoretest.model.response.BaseResponse
+import com.example.grocerystoretest.model.response.auth.ChangePasswordResponse
 import com.example.grocerystoretest.model.response.auth.LoginResponse
 import com.example.grocerystoretest.model.response.auth.RegisterCustomerResponse
 import com.example.grocerystoretest.model.response.auth.UserInfoResponse
@@ -47,6 +49,9 @@ interface ApiService {
     @POST("auth/login")
     fun login(@Body loginRequest: LoginRequest): Call<BaseResponse<LoginResponse>>
 
+    @PUT("auth/password")
+    fun changePassword(@Body changePasswordRequest: ChangePasswordRequest): Call<BaseResponse<ChangePasswordResponse>>
+
     @GET("auth/userInfo")
     fun getUserInfo(): Call<BaseResponse<UserInfoResponse>>
 
@@ -73,6 +78,9 @@ interface ApiService {
 
     @POST("product/available")
     fun getAvailableProductList(@Body getAvailableProductListRequest: GetAvailableProductListRequest): Call<BaseResponse<GetAvailableProductListResponse>>
+
+    @GET("product/search")
+    fun searchProduct(@Query("query") query: String): Call<BaseResponse<ProductListResponse>>
 
     @POST("payment/stripe")
     fun confirmPaymentStripe(@Body stripeConfirmPaymentRequest: StripeConfirmPaymentRequest): Call<BaseResponse<StripeConfirmPaymentResponse>>

@@ -29,6 +29,9 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
     }
 
     override fun initListener() {
+        binding.btnBack.setOnClickListener {
+            this.onBackPressedDispatcher.onBackPressed()
+        }
         binding.btnRegister.setOnClickListener {
             if (isValidated()) {
                 val registerCustomerRequest = RegisterCustomerRequest(
@@ -67,8 +70,7 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
             ).show()
             return false
         } else {
-            if (!binding.txtPassword.text.toString()
-                    .equals(binding.txtRetypePassword.text.toString())
+            if (binding.txtPassword.text.toString() != binding.txtRetypePassword.text.toString()
             ) {
                 Toast.makeText(
                     this,
@@ -76,7 +78,7 @@ class RegisterActivity : BaseActivity<ActivityRegisterBinding>() {
                     Toast.LENGTH_SHORT
                 ).show()
                 return false
-            } else if (binding.txtPassword.text.length < 9 || binding.txtPassword.text.length > 20) {
+            } else if (binding.txtPassword.text.trim().length < 9 || binding.txtPassword.text.trim().length > 20) {
                 Toast.makeText(
                     this,
                     "Mật khẩu phải từ 9 đến 20 ký tự",

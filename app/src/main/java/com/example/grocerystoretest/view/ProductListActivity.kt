@@ -54,6 +54,9 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), IProduct
     }
 
     override fun initListener() {
+        binding.btnBack.setOnClickListener {
+            this.onBackPressedDispatcher.onBackPressed()
+        }
         binding.nsRvProduct.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
             if (isAbleToFetchMore) {
                 if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {

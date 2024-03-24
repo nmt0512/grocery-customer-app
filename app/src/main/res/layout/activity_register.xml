@@ -6,6 +6,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="15dp"
+            android:background="@drawable/ic_back"
+            android:backgroundTint="@color/primary_color"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/image_view_logo"
             android:layout_width="100dp"
@@ -19,65 +29,65 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="45dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@+id/btnRegister"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/image_view_logo"
-            android:layout_marginTop="25dp"
-            android:layout_marginBottom="45dp"
-            android:layout_marginHorizontal="30dp">
+            app:layout_constraintTop_toBottomOf="@+id/image_view_logo">
 
             <EditText
                 android:id="@+id/txtPhoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:hint="Số điện thoại"
                 android:inputType="number"
-                tools:ignore="TextFields"
-                android:layout_weight="1"/>
+                tools:ignore="TextFields" />
 
             <EditText
                 android:id="@+id/txtFirstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:hint="Họ"
-                tools:ignore="TextFields"
-                android:layout_weight="1"/>
+                tools:ignore="TextFields" />
 
             <EditText
                 android:id="@+id/txtLastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:hint="Tên"
-                tools:ignore="TextFields"
-                android:layout_weight="1"/>
+                tools:ignore="TextFields" />
 
             <EditText
                 android:id="@+id/txtEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:hint="Email"
-                tools:ignore="TextFields"
-                android:layout_weight="1"/>
+                tools:ignore="TextFields" />
 
             <EditText
                 android:id="@+id/txtPassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:hint="Mật khẩu (9-20 ký tự)"
                 android:imeOptions="actionNext"
-                android:inputType="textPassword"
-                android:layout_weight="1"/>
+                android:inputType="textPassword" />
 
             <EditText
                 android:id="@+id/txtRetypePassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:hint="Nhập lại mật khẩu (9-20 ký tự)"
                 android:imeOptions="actionNext"
-                android:inputType="textPassword"
-                android:layout_weight="1"/>
+                android:inputType="textPassword" />
         </LinearLayout>
 
         <Button

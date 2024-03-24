@@ -52,23 +52,15 @@
                 app:layout_constraintTop_toBottomOf="@+id/txtProduct2" />
 
             <TextView
-                android:id="@+id/txtTotalPrice"
+                android:id="@+id/txtPickUpTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="total_price"
+                android:text="pick_up_time"
+                android:textStyle="bold"
                 android:textColor="@color/primary_color"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <TextView
-                android:id="@+id/txtBillStatus"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="bill_status"
-                android:textColor="@color/primary_color"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
