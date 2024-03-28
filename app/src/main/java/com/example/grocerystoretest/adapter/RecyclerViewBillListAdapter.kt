@@ -4,10 +4,12 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.grocerystoretest.R
 import com.example.grocerystoretest.databinding.ItemBillBinding
+import com.example.grocerystoretest.enums.BillStatus
 import com.example.grocerystoretest.model.response.bill.BillResponse
 import com.example.grocerystoretest.view.BillDetailActivity
 import com.google.gson.Gson
@@ -56,6 +58,17 @@ class RecyclerViewBillListAdapter(private val billResponseList: List<BillRespons
             }
 
             binding.txtPickUpTime.text = "Lấy hàng: ${billResponse.pickUpTime}"
+
+            billResponse.status?.let {
+                if (it == BillStatus.PREPARED) {
+                    binding.txtBillStatus.setTextColor(
+                        ContextCompat.getColor(binding.root.context, R.color.yellow)
+                    )
+                } else if (it == BillStatus.COMPLETED) {
+                    ContextCompat.getColor(binding.root.context, R.color.green)
+                }
+                binding.txtBillStatus.text = it.description
+            }
 
             binding.root.setOnClickListener {
                 val intent = Intent(binding.root.context, BillDetailActivity::class.java)

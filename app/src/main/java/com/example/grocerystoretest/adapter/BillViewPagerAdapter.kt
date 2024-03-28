@@ -14,9 +14,9 @@ class BillViewPagerAdapter(fragmentActivity: FragmentActivity) :
 
     override fun createFragment(position: Int): Fragment {
         return if (position == 0) {
-            BillListFragment(BillStatus.PAID)
+            BillListFragment(mutableListOf(BillStatus.PAID, BillStatus.PREPARED))
         } else {
-            BillListFragment(BillStatus.COMPLETED)
+            BillListFragment(mutableListOf(BillStatus.COMPLETED))
         }
     }
 }

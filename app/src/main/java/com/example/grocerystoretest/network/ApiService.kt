@@ -1,6 +1,5 @@
 package com.example.grocerystoretest.network
 
-import com.example.grocerystoretest.enums.BillStatus
 import com.example.grocerystoretest.model.request.auth.ChangePasswordRequest
 import com.example.grocerystoretest.model.request.auth.LoginRequest
 import com.example.grocerystoretest.model.request.auth.RegisterCustomerRequest
@@ -89,5 +88,5 @@ interface ApiService {
     fun createBill(@Body createBillRequest: CreateBillRequest): Call<BaseResponse<CreateBillResponse>>
 
     @GET("bill/all")
-    fun getAllBill(@Query("status") billStatus: BillStatus?): Call<BaseResponse<GetAllBillResponse>>
+    fun getAllBill(@Query("status") billStatusList: List<String>): Call<BaseResponse<GetAllBillResponse>>
 }

@@ -6,4 +6,6 @@
     <color name="bland_primary_color">#ffde91</color>
     <color name="color_bg_tiny_pink">#ffd5ad</color>
     <color name="grey">#b0b0b0</color>
+    <color name="green">#19a337</color>
+    <color name="yellow">#dab600</color>
 </resources>

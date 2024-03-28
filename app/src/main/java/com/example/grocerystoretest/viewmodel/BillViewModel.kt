@@ -43,10 +43,10 @@ class BillViewModel(context: Context) : ViewModel() {
         return billResponseLiveData
     }
 
-    fun getAllBill(billStatus: BillStatus): MutableLiveData<List<BillResponse>> {
+    fun getAllBill(billStatusList: List<BillStatus>): MutableLiveData<List<BillResponse>> {
         val billResponseListLiveData = MutableLiveData<List<BillResponse>>()
         apiService
-            .getAllBill(billStatus)
+            .getAllBill(billStatusList.map { it.toString() })
             .enqueue(object : Callback<BaseResponse<GetAllBillResponse>> {
                 override fun onResponse(
                     call: Call<BaseResponse<GetAllBillResponse>>,

@@ -8,7 +8,7 @@ import com.example.grocerystoretest.databinding.FragmentBillListBinding
 import com.example.grocerystoretest.enums.BillStatus
 import com.example.grocerystoretest.viewmodel.BillViewModel
 
-class BillListFragment(private val billStatus: BillStatus? = BillStatus.PAID) :
+class BillListFragment(private val billStatusList: List<BillStatus>) :
     BaseFragment<FragmentBillListBinding>() {
 
     private lateinit var billViewModel: BillViewModel
@@ -34,7 +34,7 @@ class BillListFragment(private val billStatus: BillStatus? = BillStatus.PAID) :
     override fun observeLiveData() {
         binding.rvBillList.layoutManager =
             LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-        billViewModel.getAllBill(billStatus!!).observe(this) {
+        billViewModel.getAllBill(billStatusList).observe(this) {
             binding.rvBillList.adapter = RecyclerViewBillListAdapter(it)
             loadingDialog?.dismiss()
         }

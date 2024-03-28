@@ -57,8 +57,7 @@
                     android:layout_marginVertical="10dp"
                     android:layout_marginStart="10dp"
                     android:text="total_price"
-                    android:textColor="@color/primary_color"
-                    android:textStyle="bold" />
+                    android:textColor="@color/primary_color" />
 
                 <TextView
                     android:id="@+id/txtOrderTime"
@@ -74,8 +73,18 @@
                     android:layout_marginVertical="10dp"
                     android:layout_marginStart="10dp"
                     android:text="pick_up_time"
+                    android:textColor="@color/primary_color" />
+
+                <TextView
+                    android:id="@+id/txtBillStatus"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="bill_status"
                     android:textColor="@color/primary_color"
                     android:textStyle="bold" />
+
             </LinearLayout>
         </androidx.core.widget.NestedScrollView>
 
