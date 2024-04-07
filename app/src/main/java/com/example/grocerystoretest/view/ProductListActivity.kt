@@ -58,12 +58,11 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), IProduct
             this.onBackPressedDispatcher.onBackPressed()
         }
         binding.nsRvProduct.setOnScrollChangeListener(NestedScrollView.OnScrollChangeListener { v, scrollX, scrollY, oldScrollX, oldScrollY ->
-            if (isAbleToFetchMore) {
-                if (scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
-                    pageNumber++
-                    binding.pbLoading.visibility = View.VISIBLE
-                    observeData()
-                }
+            if (isAbleToFetchMore && scrollY == v.getChildAt(0).measuredHeight - v.measuredHeight) {
+                isAbleToFetchMore = false
+                pageNumber++
+                binding.pbLoading.visibility = View.VISIBLE
+                observeData()
             }
         })
 
@@ -110,15 +109,17 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), IProduct
                 if (it != null) {
                     if (it.isNotEmpty()) {
                         productResponseList.addAll(it)
-                        binding.rvProduct.adapter =
-                            RecyclerViewProductAdapter(this, productResponseList)
-                        loadingDialog?.dismiss()
                         if (it.size < pageSize) {
                             disableFetchMore()
+                        } else {
+                            isAbleToFetchMore = true
                         }
                     } else {
                         disableFetchMore()
                     }
+                    binding.rvProduct.adapter =
+                        RecyclerViewProductAdapter(this, productResponseList)
+                    loadingDialog?.dismiss()
                 } else {
                     Toast.makeText(
                         this@ProductListActivity,

@@ -65,7 +65,9 @@ class RecyclerViewBillListAdapter(private val billResponseList: List<BillRespons
                         ContextCompat.getColor(binding.root.context, R.color.yellow)
                     )
                 } else if (it == BillStatus.COMPLETED) {
-                    ContextCompat.getColor(binding.root.context, R.color.green)
+                    binding.txtBillStatus.setTextColor(
+                        ContextCompat.getColor(binding.root.context, R.color.green)
+                    )
                 }
                 binding.txtBillStatus.text = it.description
             }

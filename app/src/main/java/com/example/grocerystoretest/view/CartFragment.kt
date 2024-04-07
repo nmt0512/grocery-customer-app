@@ -33,18 +33,11 @@ class CartFragment : BaseFragment<FragmentCartBinding>(),
     private lateinit var deleteConfirmDialog: AlertDialog
     private lateinit var unavailableProductDialog: AlertDialog
 
-//    private val merchantName = "CGV Cinemas"
-//    private val merchantCode = "CGV19072017"
-//    private val description = "Thanh toán hóa đơn mua hàng"
-
     override fun getContentLayout(): Int {
         return R.layout.fragment_cart
     }
 
     override fun initView() {
-
-//        AppMoMoLib.getInstance()
-//            .setEnvironment(AppMoMoLib.ENVIRONMENT.DEVELOPMENT); // AppMoMoLib.ENVIRONMENT.PRODUCTION
 
         loadingDialog?.show()
 
@@ -220,89 +213,5 @@ class CartFragment : BaseFragment<FragmentCartBinding>(),
             loadingDialog?.hide()
         }
     }
-
-//    private fun requestMomoPayment() {
-//        AppMoMoLib.getInstance().setAction(AppMoMoLib.ACTION.PAYMENT)
-//        AppMoMoLib.getInstance().setActionType(AppMoMoLib.ACTION_TYPE.GET_TOKEN)
-//
-//        val eventValue: MutableMap<String, Any> = HashMap()
-//        // client Required
-//        eventValue["merchantname"] =
-//            merchantName // Tên đối tác. được đăng ký tại https://business.momo.vn. VD: Google, Apple, Tiki , CGV Cinemas
-//        eventValue["merchantcode"] =
-//            merchantCode // Mã đối tác, được cung cấp bởi MoMo tại https://business.momo.vn
-//        eventValue["amount"] = totalPrice // Kiểu integer
-//        eventValue["orderId"] =
-//            "orderId123456789" // uniqueue id cho BillId, giá trị duy nhất cho mỗi BILL
-//        eventValue["orderLabel"] = "Mã đơn hàng" // gán nhãn
-//
-//        // client Optional - bill info
-//        eventValue["merchantnamelabel"] = "Dịch vụ" // gán nhãn
-//        eventValue["fee"] = 0 // Kiểu integer
-//        eventValue["description"] = description // mô tả đơn hàng - short description
-//
-//        // client extra data
-//        eventValue["requestId"] = merchantCode + "merchant_billId_" + System.currentTimeMillis()
-//        eventValue["partnerCode"] = merchantCode
-//        // Example extra data
-//        val objExtraData = JSONObject()
-//        try {
-//            objExtraData.put("site_code", "008")
-//            objExtraData.put("site_name", "CGV Cresent Mall")
-//            objExtraData.put("screen_code", 0)
-//            objExtraData.put("screen_name", "Special")
-//            objExtraData.put("movie_name", "Kẻ Trộm Mặt Trăng 3")
-//            objExtraData.put("movie_format", "2D")
-//        } catch (e: JSONException) {
-//            e.printStackTrace()
-//        }
-//        eventValue["extraData"] = objExtraData.toString()
-//        eventValue["extra"] = ""
-//        AppMoMoLib.getInstance().requestMoMoCallBack(this.activity, eventValue)
-//    }
-//
-//    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        super.onActivityResult(requestCode, resultCode, data)
-//        if (requestCode === AppMoMoLib.getInstance().REQUEST_CODE_MOMO && resultCode === -1) {
-//            if (data != null) {
-//                Log.e(">>>>>>>>>>", data.getIntExtra("status", -1).toString())
-//                if (data.getIntExtra("status", -1) === 0) {
-//                    Toast.makeText(
-//                        this.requireContext(),
-//                        "message: " + "Get token " + data.getStringExtra("message"),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
-//                    val token = data.getStringExtra("data") // Token response
-//                    val phoneNumber = data.getStringExtra("phonenumber")
-//
-//                    var env: String? = data.getStringExtra("env")
-//                    if (env == null) {
-//                        env = "app"
-//                    }
-//                    if (token != null && token != "") {
-//                        // TODO: send phoneNumber & token to your server side to process payment with MoMo server
-//                        // IF Momo topup success, continue to process your order
-//                    } else {
-//                        //      this.toast("message: " + this.getString(R.string.not_receive_info))
-//                    }
-//                } else if (data.getIntExtra("status", -1) === 1) {
-//                    // TOKEN FAIL
-//                    val message =
-//                        if (data.getStringExtra("message") != null) data.getStringExtra("message") else "Thất bại"
-//                    //  this.toast("message: $message")
-//                } else if (data.getIntExtra("status", -1) === 2) {
-//                    // TOKEN FAIL
-//                    //   this.toast("message: " + this.getString(R.string.not_receive_info))
-//                } else {
-//                    // TOKEN FAIL
-//                    //  this.toast("message: " + this.getString(R.string.not_receive_info))
-//                }
-//            } else {
-//                //   this.toast("message: " + this.getString(R.string.not_receive_info))
-//            }
-//        } else {
-//            // this.toast("message: " + this.getString(R.string.not_receive_info_err))
-//        }
-//    }
 
 }

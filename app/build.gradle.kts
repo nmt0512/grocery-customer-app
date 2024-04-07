@@ -47,8 +47,7 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.databinding:databinding-runtime:8.3.0")
     implementation("androidx.preference:preference-ktx:1.2.1")
-//    implementation(files("libs/zpdk-release-v3.1.aar"))
-//    implementation(files("libs/merchant-1.0.25.aar"))
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
