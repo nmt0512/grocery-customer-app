@@ -14,6 +14,7 @@ class BillFragment : BaseFragment<FragmentBillBinding>() {
 
     override fun initView() {
         binding.viewPager.adapter = BillViewPagerAdapter(this.requireActivity())
+        binding.viewPager.isUserInputEnabled = false
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
             if (position == 0) {
                 tab.text = "Đang chờ"

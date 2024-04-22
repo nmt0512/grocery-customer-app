@@ -7,6 +7,7 @@ import com.example.grocerystoretest.model.request.auth.UpdateUserInfoRequest
 import com.example.grocerystoretest.model.request.bill.CreateBillRequest
 import com.example.grocerystoretest.model.request.cart.AddToCartRequest
 import com.example.grocerystoretest.model.request.cart.UpdateCartQuantityRequest
+import com.example.grocerystoretest.model.request.customer_device.CreateCustomerDeviceRequest
 import com.example.grocerystoretest.model.request.payment.StripeConfirmPaymentRequest
 import com.example.grocerystoretest.model.request.product.GetAvailableProductListRequest
 import com.example.grocerystoretest.model.request.product.GetAvailableProductListResponse
@@ -22,7 +23,9 @@ import com.example.grocerystoretest.model.response.cart.DeleteCartByIdListRespon
 import com.example.grocerystoretest.model.response.cart.GetAllItemInCartResponse
 import com.example.grocerystoretest.model.response.cart.UpdateCartQuantityResponse
 import com.example.grocerystoretest.model.response.category.CategoryListResponse
+import com.example.grocerystoretest.model.response.customer_device.CreateCustomerDeviceResponse
 import com.example.grocerystoretest.model.response.payment.StripeConfirmPaymentResponse
+import com.example.grocerystoretest.model.response.product.BestSellingProductResponse
 import com.example.grocerystoretest.model.response.product.ProductListResponse
 import com.example.grocerystoretest.model.response.product.ProductResponse
 import retrofit2.Call
@@ -35,15 +38,6 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
-    @GET("category/all")
-    fun getAllCategory(): Call<BaseResponse<CategoryListResponse>>
-
-    @GET("product")
-    fun getProductByCategoryIdPaging(
-        @Query("categoryId") categoryId: Int,
-        @Query("page") pageNumber: Int,
-        @Query("size") pageSize: Int
-    ): Call<BaseResponse<ProductListResponse>>
 
     @POST("auth/login")
     fun login(@Body loginRequest: LoginRequest): Call<BaseResponse<LoginResponse>>
@@ -72,6 +66,16 @@ interface ApiService {
     @DELETE("cart")
     fun deleteCartByIdList(@Query("idList") idList: List<String>): Call<BaseResponse<DeleteCartByIdListResponse>>
 
+    @GET("category/all")
+    fun getAllCategory(): Call<BaseResponse<CategoryListResponse>>
+
+    @GET("product")
+    fun getProductByCategoryIdPaging(
+        @Query("categoryId") categoryId: Int,
+        @Query("page") pageNumber: Int,
+        @Query("size") pageSize: Int
+    ): Call<BaseResponse<ProductListResponse>>
+
     @GET("product/{id}")
     fun getProductById(@Path("id") productId: Int): Call<BaseResponse<ProductResponse>>
 
@@ -81,6 +85,9 @@ interface ApiService {
     @GET("product/search")
     fun searchProduct(@Query("query") query: String): Call<BaseResponse<ProductListResponse>>
 
+    @GET("product/bestSelling")
+    fun getBestSellingProduct(): Call<BaseResponse<BestSellingProductResponse>>
+
     @POST("payment/stripe")
     fun confirmPaymentStripe(@Body stripeConfirmPaymentRequest: StripeConfirmPaymentRequest): Call<BaseResponse<StripeConfirmPaymentResponse>>
 
@@ -88,5 +95,12 @@ interface ApiService {
     fun createBill(@Body createBillRequest: CreateBillRequest): Call<BaseResponse<CreateBillResponse>>
 
     @GET("bill/all")
-    fun getAllBill(@Query("status") billStatusList: List<String>): Call<BaseResponse<GetAllBillResponse>>
+    fun getAllBill(
+        @Query("status") billStatusList: List<String>,
+        @Query("page") pageNumber: Int,
+        @Query("size") pageSize: Int
+    ): Call<BaseResponse<GetAllBillResponse>>
+
+    @POST("device")
+    fun createCustomerDevice(@Body createCustomerDeviceRequest: CreateCustomerDeviceRequest): Call<BaseResponse<CreateCustomerDeviceResponse>>
 }

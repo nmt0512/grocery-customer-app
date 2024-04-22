@@ -24,10 +24,10 @@ class CartFragment : BaseFragment<FragmentCartBinding>(),
 
     private lateinit var cartViewModel: CartViewModel
     private lateinit var productViewModel: ProductViewModel
-    private lateinit var recyclerViewCartAdapter: RecyclerViewCartAdapter
 
     private lateinit var cartResponseList: MutableList<CartResponse>
     private val checkedCartItemSet = mutableSetOf<String>()
+    private val checkedOutOfStockCartItemSet = mutableSetOf<String>()
 
     private var totalPrice = 0
     private lateinit var deleteConfirmDialog: AlertDialog
@@ -47,23 +47,30 @@ class CartFragment : BaseFragment<FragmentCartBinding>(),
         val deleteConfirmDialogListener = DialogInterface.OnClickListener { dialog, which ->
             when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
-                    if (checkedCartItemSet.isNotEmpty()) {
+                    val deletingCartIdList = mutableListOf<String>()
+                    deletingCartIdList.addAll(checkedCartItemSet)
+                    deletingCartIdList.addAll(checkedOutOfStockCartItemSet)
+                    if (deletingCartIdList.isNotEmpty()) {
                         cartViewModel
-                            .deleteCartByIdList(checkedCartItemSet.toMutableList())
+                            .deleteCartByIdList(deletingCartIdList)
                             .observe(this) { response ->
                                 response.deletedIdList.isNotEmpty().let {
                                     cartResponseList
                                         .filter { checkedCartItemSet.contains(it.id) }
                                         .forEach { minusTotalPrice(it.product.unitPrice * it.quantity) }
-                                    cartResponseList.removeIf { checkedCartItemSet.contains(it.id) }
+                                    cartResponseList.removeIf { deletingCartIdList.contains(it.id) }
+
                                     checkedCartItemSet.clear()
-                                    recyclerViewCartAdapter.notifyDataSetChanged()
+                                    checkedOutOfStockCartItemSet.clear()
+
+                                    binding.rvCart.adapter = RecyclerViewCartAdapter(cartResponseList, this)
                                     dialog.dismiss()
                                     Toast.makeText(
                                         this.requireContext(),
                                         "Xóa sản phẩm thành công",
                                         Toast.LENGTH_SHORT
                                     ).show()
+                                    totalPrice = 0
                                 }
                             }
                     } else {
@@ -152,8 +159,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(),
         cartViewModel.getAllItemInCart()
         cartViewModel.cartResponseListLiveData.observe(this) {
             cartResponseList = it.toMutableList()
-            recyclerViewCartAdapter = RecyclerViewCartAdapter(cartResponseList, this)
-            binding.rvCart.adapter = recyclerViewCartAdapter
+            binding.rvCart.adapter = RecyclerViewCartAdapter(cartResponseList, this)
             loadingDialog?.hide()
         }
     }
@@ -163,6 +169,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(),
         binding.txtCartTotalPrice.text =
             "Tổng tiền: ${NumberConverterUtil.convertNumberToStringWithDot(totalPrice)} Đ"
         checkedCartItemSet.clear()
+        checkedOutOfStockCartItemSet.clear()
         observeLiveData()
         super.onResume()
     }
@@ -202,7 +209,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(),
         loadingDialog?.show()
         cartViewModel.updateCartQuantity(updateCartQuantityRequest).observe(this) {
             cartResponseList[position].quantity = it.quantity
-            recyclerViewCartAdapter.notifyItemChanged(position, it)
+            binding.rvCart.adapter?.notifyItemChanged(position, it)
             isPlusTotalPrice?.let {
                 if (isPlusTotalPrice) {
                     plusTotalPrice(updatingMoney!!)
@@ -212,6 +219,18 @@ class CartFragment : BaseFragment<FragmentCartBinding>(),
             }
             loadingDialog?.hide()
         }
+    }
+
+    override fun addToCheckedOutOfStockCartItemSet(cartId: String) {
+        checkedOutOfStockCartItemSet.add(cartId)
+    }
+
+    override fun removeFromCheckedOutOfStockCartItemSet(cartId: String) {
+        checkedOutOfStockCartItemSet.remove(cartId)
+    }
+
+    override fun isCheckedOutOfStockCartItemSetContains(cartId: String): Boolean {
+        return checkedOutOfStockCartItemSet.contains(cartId)
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.grocerystoretest.adapter
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -7,9 +8,15 @@ import com.bumptech.glide.Glide
 import com.example.grocerystoretest.R
 import com.example.grocerystoretest.databinding.ItemHomeProductBinding
 import com.example.grocerystoretest.model.response.product.ProductResponse
+import com.example.grocerystoretest.utils.NumberConverterUtil
+import com.example.grocerystoretest.view.IHomeFragment
+import com.example.grocerystoretest.view.ProductDetailActivity
 
-class RecyclerViewBestSellingProductAdapter(private val productResponseList: List<ProductResponse>) :
-    RecyclerView.Adapter<RecyclerViewBestSellingProductAdapter.BestSellingProductViewHolder>() {
+class RecyclerViewHomeProductAdapter(
+    private val homeFragment: IHomeFragment,
+    private val productResponseList: List<ProductResponse>
+) :
+    RecyclerView.Adapter<RecyclerViewHomeProductAdapter.BestSellingProductViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -41,8 +48,29 @@ class RecyclerViewBestSellingProductAdapter(private val productResponseList: Lis
                     .centerInside()
                     .into(binding.imgProduct)
             }
-            val priceStr = "Giá: ${productResponse.unitPrice}Đ"
+            val priceStr =
+                NumberConverterUtil.getProductPriceStringByPrice(productResponse.unitPrice)
             binding.txtPrice.text = priceStr
+
+            binding.btnAddToCart.setOnClickListener {
+                homeFragment.showBottomSheetDialog(productResponse)
+            }
+
+            binding.imgProduct.setOnClickListener {
+                startProductDetailActivity(productResponse.id)
+            }
+            binding.txtName.setOnClickListener {
+                startProductDetailActivity(productResponse.id)
+            }
+            binding.txtPrice.setOnClickListener {
+                startProductDetailActivity(productResponse.id)
+            }
+        }
+
+        private fun startProductDetailActivity(productId: Int) {
+            val intent = Intent(binding.root.context, ProductDetailActivity::class.java)
+            intent.putExtra("productId", productId)
+            binding.root.context.startActivity(intent)
         }
     }
 }

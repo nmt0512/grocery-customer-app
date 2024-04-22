@@ -24,16 +24,16 @@
                 android:queryHint="Bạn muốn tìm gì ?"
                 android:searchIcon="@drawable/ic_search"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/image_view_qr"
+                app:layout_constraintEnd_toStartOf="@+id/image_view_chatbot"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:id="@+id/image_view_qr"
+                android:id="@+id/image_view_chatbot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="10dp"
-                android:src="@drawable/ic_qr_code"
+                android:src="@drawable/ic_chatbot"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

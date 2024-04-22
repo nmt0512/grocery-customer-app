@@ -48,16 +48,24 @@ class RecyclerViewCartAdapter(
                 NumberConverterUtil.getProductPriceStringByPrice(productResponse.unitPrice)
             binding.txtQuantity.text = cartResponse.quantity.toString()
 
+            binding.checkboxCartItem.isChecked =
+                cartFragment.isCheckedCartItemSetContains(cartResponse.id)
+                        || cartFragment.isCheckedOutOfStockCartItemSetContains(cartResponse.id)
+
             if (productResponse.quantity == 0) {
                 binding.root.background = null
                 binding.root.alpha = 0.5F
-                binding.root.isEnabled = false
-                binding.checkboxCartItem.visibility = View.GONE
+                binding.layoutCartQuantity.visibility = View.GONE
                 binding.txtOutOfStock.visibility = View.VISIBLE
-            } else {
-                binding.checkboxCartItem.isChecked =
-                    cartFragment.isCheckedCartItemSetContains(cartResponse.id)
 
+                binding.checkboxCartItem.setOnClickListener {
+                    if (binding.checkboxCartItem.isChecked) {
+                        cartFragment.addToCheckedOutOfStockCartItemSet(cartResponse.id)
+                    } else {
+                        cartFragment.removeFromCheckedOutOfStockCartItemSet(cartResponse.id)
+                    }
+                }
+            } else {
                 binding.btnMinusQuantity.setOnClickListener {
                     binding.root.isClickable = false
                     val oldQuantity = binding.txtQuantity.text.toString().toInt()

@@ -20,4 +20,10 @@ interface ICartFragment {
         isPlusTotalPrice: Boolean?,
         updatingMoney: Int?
     )
+
+    fun addToCheckedOutOfStockCartItemSet(cartId: String)
+
+    fun removeFromCheckedOutOfStockCartItemSet(cartId: String)
+
+    fun isCheckedOutOfStockCartItemSetContains(cartId: String): Boolean
 }

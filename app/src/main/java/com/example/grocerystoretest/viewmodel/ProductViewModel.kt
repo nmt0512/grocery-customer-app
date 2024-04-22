@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.example.grocerystoretest.model.request.product.GetAvailableProductListRequest
 import com.example.grocerystoretest.model.request.product.GetAvailableProductListResponse
 import com.example.grocerystoretest.model.response.BaseResponse
+import com.example.grocerystoretest.model.response.product.BestSellingProductResponse
 import com.example.grocerystoretest.model.response.product.ProductListResponse
 import com.example.grocerystoretest.model.response.product.ProductResponse
 import com.example.grocerystoretest.network.RetrofitClient
@@ -109,5 +110,32 @@ class ProductViewModel(context: Context) : ViewModel() {
                 }
 
             })
+    }
+
+    fun getBestSellingProduct(): MutableLiveData<List<ProductResponse>> {
+        val productResponseListLiveData = MutableLiveData<List<ProductResponse>>()
+        apiService
+            .getBestSellingProduct()
+            .enqueue(object: Callback<BaseResponse<BestSellingProductResponse>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<BestSellingProductResponse>>,
+                    response: Response<BaseResponse<BestSellingProductResponse>>
+                ) {
+                    if (response.body() != null) {
+                        productResponseListLiveData.value = response.body()!!.data?.productResponseList
+                    } else {
+                        productResponseListLiveData.value = mutableListOf()
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<BaseResponse<BestSellingProductResponse>>,
+                    t: Throwable
+                ) {
+                    productResponseListLiveData.value = mutableListOf()
+                }
+
+            })
+        return productResponseListLiveData
     }
 }
