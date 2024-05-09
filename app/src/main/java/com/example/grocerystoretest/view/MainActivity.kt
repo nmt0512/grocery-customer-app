@@ -22,6 +22,7 @@ import com.example.grocerystoretest.viewmodel.CustomerDeviceViewModel
 import com.example.grocerystoretest.viewmodel.LoginViewModel
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import io.kommunicate.Kommunicate
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
@@ -125,4 +126,5 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             Settings.Secure.ANDROID_ID,
         )
     }
+
 }

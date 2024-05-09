@@ -76,4 +76,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.8.0"))
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-messaging")
+
+    implementation("io.kommunicate.sdk:kommunicateui:2.9.5")
+
 }

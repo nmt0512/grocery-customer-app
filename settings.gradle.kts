@@ -11,6 +11,7 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven(url = "https://jitpack.io")
+        maven(url = "https://kommunicate.jfrog.io/artifactory/kommunicate-android-sdk")
     }
 }
 

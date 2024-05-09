@@ -1,12 +1,16 @@
 package com.example.grocerystoretest.view
 
 import android.app.AlertDialog
+import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import com.example.grocerystoretest.R
 import com.example.grocerystoretest.base.BaseFragment
 import com.example.grocerystoretest.databinding.FragmentAccountBinding
 import com.example.grocerystoretest.utils.ApplicationPreference
+import io.kommunicate.Kommunicate
+import io.kommunicate.callbacks.KMLogoutHandler
+
 
 class AccountFragment : BaseFragment<FragmentAccountBinding>() {
 
@@ -25,6 +29,13 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>() {
         val logoutConfirmDialogListener = DialogInterface.OnClickListener { dialog, which ->
             when (which) {
                 DialogInterface.BUTTON_POSITIVE -> {
+                    Kommunicate.logout(this.requireContext(), object : KMLogoutHandler {
+                        override fun onSuccess(context: Context) {
+                        }
+
+                        override fun onFailure(exception: Exception) {
+                        }
+                    })
                     ApplicationPreference.getInstance(this.requireContext())?.logout()
                     val intent = Intent(this.requireContext(), LoginActivity::class.java)
                     startActivity(intent)

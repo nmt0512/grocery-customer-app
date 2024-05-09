@@ -1,16 +1,18 @@
 package com.example.grocerystoretest.view
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.applozic.mobicomkit.api.account.register.RegistrationResponse
 import com.bumptech.glide.Glide
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.example.grocerystoretest.R
-import com.example.grocerystoretest.adapter.RecyclerViewHomeProductAdapter
 import com.example.grocerystoretest.adapter.RecyclerViewCategoryAdapter
+import com.example.grocerystoretest.adapter.RecyclerViewHomeProductAdapter
 import com.example.grocerystoretest.adapter.RecyclerViewSearchProductAdapter
 import com.example.grocerystoretest.base.BaseFragment
 import com.example.grocerystoretest.databinding.DialogAddToCartBinding
@@ -18,11 +20,17 @@ import com.example.grocerystoretest.databinding.FragmentHomeBinding
 import com.example.grocerystoretest.model.request.cart.AddToCartRequest
 import com.example.grocerystoretest.model.response.cart.AddToCartResponse
 import com.example.grocerystoretest.model.response.product.ProductResponse
+import com.example.grocerystoretest.utils.ApplicationPreference
 import com.example.grocerystoretest.utils.NumberConverterUtil
 import com.example.grocerystoretest.viewmodel.CartViewModel
 import com.example.grocerystoretest.viewmodel.CategoryViewModel
 import com.example.grocerystoretest.viewmodel.ProductViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import io.kommunicate.Kommunicate
+import io.kommunicate.callbacks.KMLoginHandler
+import io.kommunicate.callbacks.KmCallback
+import io.kommunicate.users.KMUser
+
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), IHomeFragment {
 
@@ -45,6 +53,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), IHomeFragment {
         loadingDialog?.show()
 
         initBottomSheetDialog()
+        initKommunicate()
 
         categoryViewModel = CategoryViewModel(this.requireContext())
         productViewModel = ProductViewModel(this.requireContext())
@@ -140,6 +149,42 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), IHomeFragment {
                 }
             }
         }
+        binding.imageViewChatbot.setOnClickListener {
+            if (KMUser.isLoggedIn(this.requireContext())) {
+                openConversation()
+            } else {
+                val user = KMUser()
+                user.userId =
+                    ApplicationPreference.getInstance(this.requireContext())!!.getUserInfo().id
+                Kommunicate.login(this.context, user, object : KMLoginHandler {
+                    override fun onSuccess(
+                        registrationResponse: RegistrationResponse,
+                        context: Context
+                    ) {
+                        openConversation()
+                    }
+
+                    override fun onFailure(
+                        registrationResponse: RegistrationResponse,
+                        exception: Exception
+                    ) {
+                    }
+                })
+            }
+        }
+    }
+
+    private fun openConversation() {
+        Kommunicate.openConversation(
+            this.requireContext(),
+            null,
+            object : KmCallback {
+                override fun onSuccess(message: Any) {
+                }
+
+                override fun onFailure(error: Any) {
+                }
+            })
     }
 
     override fun observeLiveData() {
@@ -171,6 +216,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), IHomeFragment {
             .inflate(R.layout.dialog_add_to_cart, null)
         dialogAddToCartBinding = DialogAddToCartBinding.bind(bottomSheetDialogView)
         bottomSheetDialog.setContentView(bottomSheetDialogView)
+    }
+
+    private fun initKommunicate() {
+        Kommunicate.init(this.context, "37781a065d5d29e2459e0ea3cbf4c74d5")
     }
 
     override fun showBottomSheetDialog(productResponse: ProductResponse) {
