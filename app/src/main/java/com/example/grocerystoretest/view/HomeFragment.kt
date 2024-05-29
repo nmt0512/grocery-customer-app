@@ -207,6 +207,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), IHomeFragment {
             }
         }
 
+        productViewModel.getRecommendedProduct().observe(this) {
+            if (it.isNotEmpty()) {
+                binding.rvRecommendedProduct.adapter = RecyclerViewHomeProductAdapter(this, it)
+            }
+        }
+
     }
 
     private fun initBottomSheetDialog() {

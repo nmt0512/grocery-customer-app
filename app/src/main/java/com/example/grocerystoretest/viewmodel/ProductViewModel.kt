@@ -9,6 +9,7 @@ import com.example.grocerystoretest.model.response.BaseResponse
 import com.example.grocerystoretest.model.response.product.BestSellingProductResponse
 import com.example.grocerystoretest.model.response.product.ProductListResponse
 import com.example.grocerystoretest.model.response.product.ProductResponse
+import com.example.grocerystoretest.model.response.product.RecommendedProductResponse
 import com.example.grocerystoretest.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -116,13 +117,14 @@ class ProductViewModel(context: Context) : ViewModel() {
         val productResponseListLiveData = MutableLiveData<List<ProductResponse>>()
         apiService
             .getBestSellingProduct()
-            .enqueue(object: Callback<BaseResponse<BestSellingProductResponse>> {
+            .enqueue(object : Callback<BaseResponse<BestSellingProductResponse>> {
                 override fun onResponse(
                     call: Call<BaseResponse<BestSellingProductResponse>>,
                     response: Response<BaseResponse<BestSellingProductResponse>>
                 ) {
                     if (response.body() != null) {
-                        productResponseListLiveData.value = response.body()!!.data?.productResponseList
+                        productResponseListLiveData.value =
+                            response.body()!!.data?.productResponseList
                     } else {
                         productResponseListLiveData.value = mutableListOf()
                     }
@@ -130,6 +132,34 @@ class ProductViewModel(context: Context) : ViewModel() {
 
                 override fun onFailure(
                     call: Call<BaseResponse<BestSellingProductResponse>>,
+                    t: Throwable
+                ) {
+                    productResponseListLiveData.value = mutableListOf()
+                }
+
+            })
+        return productResponseListLiveData
+    }
+
+    fun getRecommendedProduct(): MutableLiveData<List<ProductResponse>> {
+        val productResponseListLiveData = MutableLiveData<List<ProductResponse>>()
+        apiService
+            .getRecommendedProduct()
+            .enqueue(object : Callback<BaseResponse<RecommendedProductResponse>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<RecommendedProductResponse>>,
+                    response: Response<BaseResponse<RecommendedProductResponse>>
+                ) {
+                    if (response.body() != null) {
+                        productResponseListLiveData.value =
+                            response.body()!!.data?.productResponseList
+                    } else {
+                        productResponseListLiveData.value = mutableListOf()
+                    }
+                }
+
+                override fun onFailure(
+                    call: Call<BaseResponse<RecommendedProductResponse>>,
                     t: Throwable
                 ) {
                     productResponseListLiveData.value = mutableListOf()

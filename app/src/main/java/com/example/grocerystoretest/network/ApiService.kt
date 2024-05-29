@@ -28,6 +28,7 @@ import com.example.grocerystoretest.model.response.payment.StripeConfirmPaymentR
 import com.example.grocerystoretest.model.response.product.BestSellingProductResponse
 import com.example.grocerystoretest.model.response.product.ProductListResponse
 import com.example.grocerystoretest.model.response.product.ProductResponse
+import com.example.grocerystoretest.model.response.product.RecommendedProductResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -87,6 +88,9 @@ interface ApiService {
 
     @GET("product/bestSelling")
     fun getBestSellingProduct(): Call<BaseResponse<BestSellingProductResponse>>
+
+    @GET("product/recommended")
+    fun getRecommendedProduct(): Call<BaseResponse<RecommendedProductResponse>>
 
     @POST("payment/stripe")
     fun confirmPaymentStripe(@Body stripeConfirmPaymentRequest: StripeConfirmPaymentRequest): Call<BaseResponse<StripeConfirmPaymentResponse>>
