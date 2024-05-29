@@ -27,7 +27,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Chọn sản phẩm"
+                android:text="Chỉnh sửa thông tin"
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="18dp"
