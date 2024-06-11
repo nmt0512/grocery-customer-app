@@ -1,9 +1,11 @@
 package com.example.grocerystoretest.view
 
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.denzcoskun.imageslider.constants.ScaleTypes
 import com.denzcoskun.imageslider.models.SlideModel
 import com.example.grocerystoretest.R
+import com.example.grocerystoretest.adapter.RecyclerViewSimilarProductAdapter
 import com.example.grocerystoretest.base.BaseActivity
 import com.example.grocerystoretest.databinding.ActivityProductDetailBinding
 import com.example.grocerystoretest.model.request.cart.AddToCartRequest
@@ -32,6 +34,8 @@ class ProductDetailActivity : BaseActivity<ActivityProductDetailBinding>() {
             productViewModel.getProductDetailById(productId)
             binding.txtAddingCartQuantity.text = 1.toString()
         }
+        binding.rvSimilarProduct.layoutManager =
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
 
     override fun observeData() {
@@ -45,12 +49,11 @@ class ProductDetailActivity : BaseActivity<ActivityProductDetailBinding>() {
             binding.txtProductQuantity.text = "Số lượng: ${productResponse.quantity}"
             binding.expandableTxtProductDescription.text = productResponse.description
 
-//            binding.rvSimilarProduct.layoutManager =
-//                LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-
-            // ADD get similar product API and bind to view
-
             loadingDialog?.dismiss()
+        }
+
+        productViewModel.getSimilarProduct(productId).observe(this) {
+            binding.rvSimilarProduct.adapter = RecyclerViewSimilarProductAdapter(it)
         }
 
         cartViewModel.addToCartResponseLiveData.observe(this) {

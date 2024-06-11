@@ -6,10 +6,9 @@ import androidx.lifecycle.ViewModel
 import com.example.grocerystoretest.model.request.product.GetAvailableProductListRequest
 import com.example.grocerystoretest.model.request.product.GetAvailableProductListResponse
 import com.example.grocerystoretest.model.response.BaseResponse
-import com.example.grocerystoretest.model.response.product.BestSellingProductResponse
+import com.example.grocerystoretest.model.response.product.ProductListPagingResponse
 import com.example.grocerystoretest.model.response.product.ProductListResponse
 import com.example.grocerystoretest.model.response.product.ProductResponse
-import com.example.grocerystoretest.model.response.product.RecommendedProductResponse
 import com.example.grocerystoretest.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -29,16 +28,16 @@ class ProductViewModel(context: Context) : ViewModel() {
         val productResponseListLiveData = MutableLiveData<List<ProductResponse>>()
         apiService
             .getProductByCategoryIdPaging(categoryId, pageNumber, pageSize)
-            .enqueue(object : Callback<BaseResponse<ProductListResponse>> {
+            .enqueue(object : Callback<BaseResponse<ProductListPagingResponse>> {
                 override fun onResponse(
-                    call: Call<BaseResponse<ProductListResponse>>,
-                    response: Response<BaseResponse<ProductListResponse>>
+                    call: Call<BaseResponse<ProductListPagingResponse>>,
+                    response: Response<BaseResponse<ProductListPagingResponse>>
                 ) {
                     productResponseListLiveData.value = response.body()?.data?.content
                 }
 
                 override fun onFailure(
-                    call: Call<BaseResponse<ProductListResponse>>,
+                    call: Call<BaseResponse<ProductListPagingResponse>>,
                     t: Throwable
                 ) {
                 }
@@ -91,10 +90,10 @@ class ProductViewModel(context: Context) : ViewModel() {
     fun searchProduct(query: String) {
         apiService
             .searchProduct(query)
-            .enqueue(object : Callback<BaseResponse<ProductListResponse>> {
+            .enqueue(object : Callback<BaseResponse<ProductListPagingResponse>> {
                 override fun onResponse(
-                    call: Call<BaseResponse<ProductListResponse>>,
-                    response: Response<BaseResponse<ProductListResponse>>
+                    call: Call<BaseResponse<ProductListPagingResponse>>,
+                    response: Response<BaseResponse<ProductListPagingResponse>>
                 ) {
                     if (response.body() != null) {
                         searchProductResponseListLiveData.value = response.body()!!.data?.content
@@ -104,7 +103,7 @@ class ProductViewModel(context: Context) : ViewModel() {
                 }
 
                 override fun onFailure(
-                    call: Call<BaseResponse<ProductListResponse>>,
+                    call: Call<BaseResponse<ProductListPagingResponse>>,
                     t: Throwable
                 ) {
                     searchProductResponseListLiveData.value = mutableListOf()
@@ -117,10 +116,10 @@ class ProductViewModel(context: Context) : ViewModel() {
         val productResponseListLiveData = MutableLiveData<List<ProductResponse>>()
         apiService
             .getBestSellingProduct()
-            .enqueue(object : Callback<BaseResponse<BestSellingProductResponse>> {
+            .enqueue(object : Callback<BaseResponse<ProductListResponse>> {
                 override fun onResponse(
-                    call: Call<BaseResponse<BestSellingProductResponse>>,
-                    response: Response<BaseResponse<BestSellingProductResponse>>
+                    call: Call<BaseResponse<ProductListResponse>>,
+                    response: Response<BaseResponse<ProductListResponse>>
                 ) {
                     if (response.body() != null) {
                         productResponseListLiveData.value =
@@ -131,7 +130,7 @@ class ProductViewModel(context: Context) : ViewModel() {
                 }
 
                 override fun onFailure(
-                    call: Call<BaseResponse<BestSellingProductResponse>>,
+                    call: Call<BaseResponse<ProductListResponse>>,
                     t: Throwable
                 ) {
                     productResponseListLiveData.value = mutableListOf()
@@ -145,21 +144,41 @@ class ProductViewModel(context: Context) : ViewModel() {
         val productResponseListLiveData = MutableLiveData<List<ProductResponse>>()
         apiService
             .getRecommendedProduct()
-            .enqueue(object : Callback<BaseResponse<RecommendedProductResponse>> {
+            .enqueue(object : Callback<BaseResponse<ProductListResponse>> {
                 override fun onResponse(
-                    call: Call<BaseResponse<RecommendedProductResponse>>,
-                    response: Response<BaseResponse<RecommendedProductResponse>>
+                    call: Call<BaseResponse<ProductListResponse>>,
+                    response: Response<BaseResponse<ProductListResponse>>
                 ) {
-                    if (response.body() != null) {
-                        productResponseListLiveData.value =
-                            response.body()!!.data?.productResponseList
-                    } else {
-                        productResponseListLiveData.value = mutableListOf()
-                    }
+                    productResponseListLiveData.value =
+                        response.body()?.data?.productResponseList ?: mutableListOf()
                 }
 
                 override fun onFailure(
-                    call: Call<BaseResponse<RecommendedProductResponse>>,
+                    call: Call<BaseResponse<ProductListResponse>>,
+                    t: Throwable
+                ) {
+                    productResponseListLiveData.value = mutableListOf()
+                }
+
+            })
+        return productResponseListLiveData
+    }
+
+    fun getSimilarProduct(id: Int): MutableLiveData<List<ProductResponse>> {
+        val productResponseListLiveData = MutableLiveData<List<ProductResponse>>()
+        apiService
+            .getSimilarProduct(id)
+            .enqueue(object : Callback<BaseResponse<ProductListResponse>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<ProductListResponse>>,
+                    response: Response<BaseResponse<ProductListResponse>>
+                ) {
+                    productResponseListLiveData.value =
+                        response.body()?.data?.productResponseList ?: mutableListOf()
+                }
+
+                override fun onFailure(
+                    call: Call<BaseResponse<ProductListResponse>>,
                     t: Throwable
                 ) {
                     productResponseListLiveData.value = mutableListOf()

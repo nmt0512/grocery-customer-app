@@ -18,6 +18,7 @@ import com.example.grocerystoretest.model.response.auth.RegisterCustomerResponse
 import com.example.grocerystoretest.model.response.auth.UserInfoResponse
 import com.example.grocerystoretest.model.response.bill.CreateBillResponse
 import com.example.grocerystoretest.model.response.bill.GetAllBillResponse
+import com.example.grocerystoretest.model.response.bill.GetBillByIdResponse
 import com.example.grocerystoretest.model.response.cart.AddToCartResponse
 import com.example.grocerystoretest.model.response.cart.DeleteCartByIdListResponse
 import com.example.grocerystoretest.model.response.cart.GetAllItemInCartResponse
@@ -25,10 +26,9 @@ import com.example.grocerystoretest.model.response.cart.UpdateCartQuantityRespon
 import com.example.grocerystoretest.model.response.category.CategoryListResponse
 import com.example.grocerystoretest.model.response.customer_device.CreateCustomerDeviceResponse
 import com.example.grocerystoretest.model.response.payment.StripeConfirmPaymentResponse
-import com.example.grocerystoretest.model.response.product.BestSellingProductResponse
+import com.example.grocerystoretest.model.response.product.ProductListPagingResponse
 import com.example.grocerystoretest.model.response.product.ProductListResponse
 import com.example.grocerystoretest.model.response.product.ProductResponse
-import com.example.grocerystoretest.model.response.product.RecommendedProductResponse
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -75,7 +75,7 @@ interface ApiService {
         @Query("categoryId") categoryId: Int,
         @Query("page") pageNumber: Int,
         @Query("size") pageSize: Int
-    ): Call<BaseResponse<ProductListResponse>>
+    ): Call<BaseResponse<ProductListPagingResponse>>
 
     @GET("product/{id}")
     fun getProductById(@Path("id") productId: Int): Call<BaseResponse<ProductResponse>>
@@ -84,13 +84,16 @@ interface ApiService {
     fun getAvailableProductList(@Body getAvailableProductListRequest: GetAvailableProductListRequest): Call<BaseResponse<GetAvailableProductListResponse>>
 
     @GET("product/search")
-    fun searchProduct(@Query("query") query: String): Call<BaseResponse<ProductListResponse>>
+    fun searchProduct(@Query("query") query: String): Call<BaseResponse<ProductListPagingResponse>>
 
     @GET("product/bestSelling")
-    fun getBestSellingProduct(): Call<BaseResponse<BestSellingProductResponse>>
+    fun getBestSellingProduct(): Call<BaseResponse<ProductListResponse>>
 
     @GET("product/recommended")
-    fun getRecommendedProduct(): Call<BaseResponse<RecommendedProductResponse>>
+    fun getRecommendedProduct(): Call<BaseResponse<ProductListResponse>>
+
+    @GET("product/similar")
+    fun getSimilarProduct(@Query("id") id: Int): Call<BaseResponse<ProductListResponse>>
 
     @POST("payment/stripe")
     fun confirmPaymentStripe(@Body stripeConfirmPaymentRequest: StripeConfirmPaymentRequest): Call<BaseResponse<StripeConfirmPaymentResponse>>
@@ -105,6 +108,9 @@ interface ApiService {
         @Query("size") pageSize: Int
     ): Call<BaseResponse<GetAllBillResponse>>
 
-    @POST("device")
+    @GET("bill/{id}")
+    fun getBillById(@Path("id") billId: Int): Call<BaseResponse<GetBillByIdResponse>>
+
+    @POST("notify/device")
     fun createCustomerDevice(@Body createCustomerDeviceRequest: CreateCustomerDeviceRequest): Call<BaseResponse<CreateCustomerDeviceResponse>>
 }
