@@ -9,6 +9,7 @@ import com.example.grocerystoretest.model.response.BaseResponse
 import com.example.grocerystoretest.model.response.bill.BillResponse
 import com.example.grocerystoretest.model.response.bill.CreateBillResponse
 import com.example.grocerystoretest.model.response.bill.GetAllBillResponse
+import com.example.grocerystoretest.model.response.bill.GetBillByIdResponse
 import com.example.grocerystoretest.network.RetrofitClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,12 +28,8 @@ class BillViewModel(context: Context) : ViewModel() {
                     call: Call<BaseResponse<CreateBillResponse>>,
                     response: Response<BaseResponse<CreateBillResponse>>
                 ) {
-                    if (response.body() != null) {
-                        billResponseLiveData.value = response.body()!!.data!!.billResponse
-                    } else {
-                        billResponseLiveData.value = BillResponse()
-                    }
-
+                    billResponseLiveData.value =
+                        response.body()?.data?.billResponse ?: BillResponse()
                 }
 
                 override fun onFailure(call: Call<BaseResponse<CreateBillResponse>>, t: Throwable) {
@@ -56,11 +53,8 @@ class BillViewModel(context: Context) : ViewModel() {
                     call: Call<BaseResponse<GetAllBillResponse>>,
                     response: Response<BaseResponse<GetAllBillResponse>>
                 ) {
-                    if (response.body() != null) {
-                        billResponseListLiveData.value = response.body()!!.data?.billResponseList
-                    } else {
-                        billResponseListLiveData.value = mutableListOf()
-                    }
+                    billResponseListLiveData.value =
+                        response.body()?.data?.billResponseList ?: mutableListOf()
                 }
 
                 override fun onFailure(call: Call<BaseResponse<GetAllBillResponse>>, t: Throwable) {
@@ -69,6 +63,30 @@ class BillViewModel(context: Context) : ViewModel() {
 
             })
         return billResponseListLiveData
+    }
+
+    fun getBillById(billId: Int): MutableLiveData<BillResponse> {
+        val billResponseLiveData = MutableLiveData<BillResponse>()
+        apiService
+            .getBillById(billId)
+            .enqueue(object : Callback<BaseResponse<GetBillByIdResponse>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<GetBillByIdResponse>>,
+                    response: Response<BaseResponse<GetBillByIdResponse>>
+                ) {
+                    billResponseLiveData.value =
+                        response.body()?.data?.billResponse ?: BillResponse()
+                }
+
+                override fun onFailure(
+                    call: Call<BaseResponse<GetBillByIdResponse>>,
+                    t: Throwable
+                ) {
+                    billResponseLiveData.value = BillResponse()
+                }
+
+            })
+        return billResponseLiveData
     }
 
 }

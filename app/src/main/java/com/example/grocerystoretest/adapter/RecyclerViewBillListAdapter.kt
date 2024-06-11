@@ -36,6 +36,8 @@ class RecyclerViewBillListAdapter(private val billResponseList: List<BillRespons
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(billResponse: BillResponse) {
+            binding.txtBillId.text = billResponse.id.toString()
+
             val billItemList = billResponse.billItems!!
             Glide.with(binding.root)
                 .load(billItemList[0].productResponse.images[0])
@@ -67,6 +69,10 @@ class RecyclerViewBillListAdapter(private val billResponseList: List<BillRespons
                 } else if (it == BillStatus.COMPLETED) {
                     binding.txtBillStatus.setTextColor(
                         ContextCompat.getColor(binding.root.context, R.color.green)
+                    )
+                } else if (it == BillStatus.CANCELLED) {
+                    binding.txtBillStatus.setTextColor(
+                        ContextCompat.getColor(binding.root.context, R.color.grey)
                     )
                 }
                 binding.txtBillStatus.text = it.description

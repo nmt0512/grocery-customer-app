@@ -16,10 +16,22 @@ class BillFragment : BaseFragment<FragmentBillBinding>() {
         binding.viewPager.adapter = BillViewPagerAdapter(this.requireActivity())
         binding.viewPager.isUserInputEnabled = false
         TabLayoutMediator(binding.tabLayout, binding.viewPager) { tab, position ->
-            if (position == 0) {
-                tab.text = "Đang chờ"
-            } else if (position == 1) {
-                tab.text = "Đã hoàn thành"
+            when (position) {
+                0 -> {
+                    tab.text = "Đang chờ"
+                }
+
+                1 -> {
+                    tab.text = "Đã chuẩn bị"
+                }
+
+                2 -> {
+                    tab.text = "Đã hoàn thành"
+                }
+
+                3 -> {
+                    tab.text = "Đã hủy"
+                }
             }
         }.attach()
     }
