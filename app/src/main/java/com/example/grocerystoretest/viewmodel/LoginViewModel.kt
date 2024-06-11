@@ -32,8 +32,10 @@ class LoginViewModel(context: Context) : ViewModel() {
                         isSuccessfullyLoggedIn.value = true
                         val loginResponse = response.body()?.data
                         if (loginResponse != null) {
-                            applicationPreference?.saveAccessToken(loginResponse.accessToken)
-                            applicationPreference?.saveLoginRequest(loginRequest)
+                            applicationPreference?.saveToken(
+                                loginResponse.refreshToken,
+                                loginResponse.accessToken
+                            )
                         }
                     } else {
                         isSuccessfullyLoggedIn.value = false

@@ -29,12 +29,7 @@ class CartViewModel(context: Context) {
                     call: Call<BaseResponse<AddToCartResponse>>,
                     response: Response<BaseResponse<AddToCartResponse>>
                 ) {
-                    if (response.body() != null) {
-                        addToCartResponseLiveData.value = response.body()!!.data!!
-                    } else {
-                        addToCartResponseLiveData.value = AddToCartResponse()
-                    }
-
+                    addToCartResponseLiveData.value = response.body()?.data ?: AddToCartResponse()
                 }
 
                 override fun onFailure(call: Call<BaseResponse<AddToCartResponse>>, t: Throwable) {
@@ -52,11 +47,8 @@ class CartViewModel(context: Context) {
                     call: Call<BaseResponse<GetAllItemInCartResponse>>,
                     response: Response<BaseResponse<GetAllItemInCartResponse>>
                 ) {
-                    if (response.body() != null) {
-                        cartResponseListLiveData.value = response.body()?.data?.cartResponseList
-                    } else {
-                        cartResponseListLiveData.value = mutableListOf()
-                    }
+                    cartResponseListLiveData.value =
+                        response.body()?.data?.cartResponseList ?: mutableListOf()
                 }
 
                 override fun onFailure(

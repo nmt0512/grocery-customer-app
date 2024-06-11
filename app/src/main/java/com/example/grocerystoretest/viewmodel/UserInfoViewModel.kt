@@ -61,11 +61,7 @@ class UserInfoViewModel(context: Context) : ViewModel() {
                     call: Call<BaseResponse<RegisterCustomerResponse>>,
                     response: Response<BaseResponse<RegisterCustomerResponse>>
                 ) {
-                    if (response.body() != null) {
-                        phoneNumberLiveData.value = response.body()!!.data?.registeredPhoneNumber
-                    } else {
-                        phoneNumberLiveData.value = ""
-                    }
+                    phoneNumberLiveData.value = response.body()?.data?.registeredPhoneNumber ?: ""
                 }
 
                 override fun onFailure(
@@ -88,11 +84,7 @@ class UserInfoViewModel(context: Context) : ViewModel() {
                     call: Call<BaseResponse<UserInfoResponse>>,
                     response: Response<BaseResponse<UserInfoResponse>>
                 ) {
-                    if (response.body() != null) {
-                        userInfoResponseLiveData.value = response.body()!!.data!!
-                    } else {
-                        userInfoResponseLiveData.value = UserInfoResponse()
-                    }
+                    userInfoResponseLiveData.value = response.body()?.data ?: UserInfoResponse()
                 }
 
                 override fun onFailure(call: Call<BaseResponse<UserInfoResponse>>, t: Throwable) {
