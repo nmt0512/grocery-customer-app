@@ -42,6 +42,7 @@ class OrderActivity : BaseActivity<ActivityOrderBinding>() {
     private var choosedPaymentMethod = PaymentMethodEnum.NONE
 
     private var totalPrice = 0
+    private var paymentIntentId = ""
 
     private var isBtnPaymentClicked = false
 
@@ -171,7 +172,8 @@ class OrderActivity : BaseActivity<ActivityOrderBinding>() {
     private fun requestStripePayment() {
         paymentViewModel.confirmPaymentStripe(totalPrice)
         paymentViewModel.confirmPaymentResponseLiveData.observe(this) {
-            val paymentIntentClientSecret = it.paymentIntent
+            paymentIntentId = it.paymentIntentId
+            val paymentIntentClientSecret = it.paymentIntentClientSecret
             val customerConfig = PaymentSheet.CustomerConfiguration(
                 it.customer,
                 it.ephemeralKey
@@ -209,6 +211,7 @@ class OrderActivity : BaseActivity<ActivityOrderBinding>() {
                 val cartIdList = cartResponseList.map { it.id }
                 billViewModel.createBill(
                     CreateBillRequest(
+                        paymentIntentId,
                         cartIdList,
                         pickUpDate,
                         pickUpTime
@@ -216,7 +219,6 @@ class OrderActivity : BaseActivity<ActivityOrderBinding>() {
                 ).observe(this) {
                     if (it != BillResponse()) {
                         Toast.makeText(this, "Thanh toán thành công", Toast.LENGTH_SHORT).show()
-                        this.onBackPressedDispatcher.onBackPressed()
                     } else {
                         Toast.makeText(
                             this,
@@ -225,6 +227,7 @@ class OrderActivity : BaseActivity<ActivityOrderBinding>() {
                         )
                             .show()
                     }
+                    this.onBackPressedDispatcher.onBackPressed()
                 }
             }
         }
