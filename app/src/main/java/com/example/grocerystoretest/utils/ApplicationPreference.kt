@@ -4,12 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
 import com.example.grocerystoretest.model.User
-import com.example.grocerystoretest.model.request.auth.LoginRequest
 
 class ApplicationPreference {
 
-    fun saveAccessToken(accessToken: String) {
+    fun saveToken(refreshToken: String, accessToken: String) {
         editor = pref?.edit()
+        editor?.putString("refreshToken", refreshToken)
         editor?.putString("accessToken", accessToken)
         editor?.apply()
     }
@@ -18,24 +18,14 @@ class ApplicationPreference {
         return pref?.getString("accessToken", "").toString()
     }
 
-    fun saveLoginRequest(loginRequest: LoginRequest) {
-        editor?.putString("phoneNumber", loginRequest.phoneNumber)
-        editor?.putString("password", loginRequest.password)
-        editor?.apply()
-    }
-
-    fun getLoginRequest(): LoginRequest {
-        val phoneNumber = pref?.getString("phoneNumber", "")
-        val password = pref?.getString("password", "")
-        if (phoneNumber.isNullOrBlank() || password.isNullOrBlank()) {
-            return LoginRequest()
-        }
-        return LoginRequest(phoneNumber, password)
+    fun getRefreshToken(): String {
+        return pref?.getString("refreshToken", "").toString()
     }
 
     fun saveUserInfo(user: User) {
         editor = pref?.edit()
         editor?.putString("id", user.id)
+        editor?.putString("phoneNumber", user.phoneNumber)
         editor?.putString("email", user.email)
         editor?.putString("firstName", user.firstName)
         editor?.putString("lastName", user.lastName)
@@ -59,11 +49,11 @@ class ApplicationPreference {
         editor = pref?.edit()
         editor?.remove("id")
         editor?.remove("phoneNumber")
-        editor?.remove("password")
         editor?.remove("email")
         editor?.remove("firstName")
         editor?.remove("lastName")
         editor?.remove("accessToken")
+        editor?.remove("refreshToken")
         editor?.apply()
     }
 

@@ -25,12 +25,14 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>() {
         }
         binding.btnConfirm.setOnClickListener {
             if (isValidated()) {
+                loadingDialog?.show()
                 userInfoViewModel.changePassword(
                     ChangePasswordRequest(
                         binding.txtOldPassword.text.trim().toString(),
                         binding.txtNewPassword.text.trim().toString()
                     )
                 ).observe(this) {
+                    loadingDialog?.dismiss()
                     if (it) {
                         Toast.makeText(
                             this,

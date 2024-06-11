@@ -16,28 +16,28 @@ class RecyclerViewHomeProductAdapter(
     private val homeFragment: IHomeFragment,
     private val productResponseList: List<ProductResponse>
 ) :
-    RecyclerView.Adapter<RecyclerViewHomeProductAdapter.BestSellingProductViewHolder>() {
+    RecyclerView.Adapter<RecyclerViewHomeProductAdapter.HomeProductViewHolder>() {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): BestSellingProductViewHolder {
+    ): HomeProductViewHolder {
         val view = LayoutInflater
             .from(parent.context)
             .inflate(R.layout.item_home_product, parent, false)
         val binding = ItemHomeProductBinding.bind(view)
-        return BestSellingProductViewHolder(binding)
+        return HomeProductViewHolder(binding)
     }
 
     override fun getItemCount(): Int {
         return productResponseList.size
     }
 
-    override fun onBindViewHolder(holder: BestSellingProductViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HomeProductViewHolder, position: Int) {
         holder.bind(productResponseList[position])
     }
 
-    inner class BestSellingProductViewHolder(val binding: ItemHomeProductBinding) :
+    inner class HomeProductViewHolder(val binding: ItemHomeProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(productResponse: ProductResponse) {

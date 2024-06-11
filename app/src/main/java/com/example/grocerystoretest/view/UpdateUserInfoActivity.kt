@@ -42,6 +42,7 @@ class UpdateUserInfoActivity : BaseActivity<ActivityUpdateUserInfoBinding>() {
         }
         binding.btnSaveInfo.setOnClickListener {
             if (isValidated()) {
+                loadingDialog?.show()
                 val updateUserInfoRequest = UpdateUserInfoRequest(
                     binding.txtFirstName.text.trim().toString(),
                     binding.txtLastName.text.trim().toString(),
@@ -57,6 +58,7 @@ class UpdateUserInfoActivity : BaseActivity<ActivityUpdateUserInfoBinding>() {
                             it.lastName
                         )
                         ApplicationPreference.getInstance(this)?.saveUserInfo(user)
+                        loadingDialog?.dismiss()
                         Toast.makeText(this, "Cập nhật thông tin thành công", Toast.LENGTH_SHORT)
                             .show()
                         this.onBackPressedDispatcher.onBackPressed()

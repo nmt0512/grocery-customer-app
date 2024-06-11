@@ -31,7 +31,6 @@ import io.kommunicate.callbacks.KMLoginHandler
 import io.kommunicate.callbacks.KmCallback
 import io.kommunicate.users.KMUser
 
-
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), IHomeFragment {
 
     private lateinit var categoryViewModel: CategoryViewModel
@@ -225,7 +224,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), IHomeFragment {
     }
 
     private fun initKommunicate() {
-        Kommunicate.init(this.context, "37781a065d5d29e2459e0ea3cbf4c74d5")
+        Kommunicate.init(this.context, "178093db67aabce2630f6a78049b83fb7")
     }
 
     override fun showBottomSheetDialog(productResponse: ProductResponse) {
