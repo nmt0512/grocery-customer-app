@@ -9,19 +9,38 @@ import com.example.grocerystoretest.databinding.ActivityBillDetailBinding
 import com.example.grocerystoretest.enums.BillStatus
 import com.example.grocerystoretest.model.response.bill.BillResponse
 import com.example.grocerystoretest.utils.NumberConverterUtil
+import com.example.grocerystoretest.viewmodel.BillViewModel
 import com.google.gson.Gson
 
 class BillDetailActivity : BaseActivity<ActivityBillDetailBinding>() {
+
+    private lateinit var billViewModel: BillViewModel
+
     override fun getContentLayout(): Int {
         return R.layout.activity_bill_detail
     }
 
     override fun initView() {
+        billViewModel = BillViewModel(this)
+
         binding.rvBillItem.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
-        val billResponseStr = intent.getStringExtra("billResponse")
-        val billResponse = Gson().fromJson(billResponseStr, BillResponse::class.java)
+        if (intent.getStringExtra("billResponse") != null) {
+            val billResponse =
+                Gson().fromJson(intent.getStringExtra("billResponse"), BillResponse::class.java)
+            bindBill(billResponse)
+        } else if (intent.getIntExtra("billId", 0) != 0) {
+            loadingDialog?.show()
+            billViewModel.getBillById(intent.getIntExtra("billId", 0)).observe(this) {
+                bindBill(it)
+                loadingDialog?.dismiss()
+            }
+        }
+    }
+
+    private fun bindBill(billResponse: BillResponse) {
+        binding.txtBillId.text = "ID: ${billResponse.id}"
         val billItemResponseList = billResponse.billItems
         billItemResponseList?.let {
             binding.rvBillItem.adapter = RecyclerViewBillDetailAdapter(it)
@@ -54,4 +73,5 @@ class BillDetailActivity : BaseActivity<ActivityBillDetailBinding>() {
     override fun observeData() {
 
     }
+
 }

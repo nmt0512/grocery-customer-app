@@ -1,14 +1,23 @@
 package com.example.grocerystoretest.view
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.provider.Settings
+import android.util.Log
 import androidx.fragment.app.Fragment
 import com.example.grocerystoretest.R
 import com.example.grocerystoretest.base.BaseActivity
 import com.example.grocerystoretest.databinding.ActivityHomeBinding
+import com.example.grocerystoretest.model.request.customer_device.CreateCustomerDeviceRequest
+import com.example.grocerystoretest.viewmodel.CustomerDeviceViewModel
 import com.example.grocerystoretest.viewmodel.UserInfoViewModel
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 class HomeActivity : BaseActivity<ActivityHomeBinding>() {
 
     private lateinit var userInfoViewModel: UserInfoViewModel
+    private lateinit var customerDeviceViewModel: CustomerDeviceViewModel
 
     private lateinit var homeFragment: HomeFragment
     private lateinit var billFragment: BillFragment
@@ -22,6 +31,9 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
     override fun initView() {
         userInfoViewModel = UserInfoViewModel(this)
         userInfoViewModel.getUserInfo()
+
+        customerDeviceViewModel = CustomerDeviceViewModel(this)
+        initFirebase()
 
         homeFragment = HomeFragment()
         billFragment = BillFragment()
@@ -71,5 +83,32 @@ class HomeActivity : BaseActivity<ActivityHomeBinding>() {
             replace(R.id.frame_layout, fragment)
             commit()
         }
+    }
+
+    private fun initFirebase() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(
+            OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w("initFirebase", "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new FCM registration token
+                task.result?.let {
+                    Log.d("initFirebase", it)
+                    customerDeviceViewModel.createCustomerDevice(
+                        CreateCustomerDeviceRequest(getDeviceId(this), it)
+                    )
+                }
+            },
+        )
+    }
+
+    @SuppressLint("HardwareIds")
+    private fun getDeviceId(context: Context): String {
+        return Settings.Secure.getString(
+            context.contentResolver,
+            Settings.Secure.ANDROID_ID,
+        )
     }
 }
