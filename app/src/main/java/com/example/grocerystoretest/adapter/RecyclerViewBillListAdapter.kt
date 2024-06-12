@@ -65,19 +65,22 @@ class RecyclerViewBillListAdapter(private val billResponseList: List<BillRespons
             binding.txtPickUpTime.text = "Lấy hàng: ${billResponse.pickUpTime}"
 
             billResponse.status?.let {
-                if (it == BillStatus.PREPARED) {
-                    binding.txtBillStatus.setTextColor(
+                when (it) {
+                    BillStatus.PREPARED -> binding.txtBillStatus.setTextColor(
                         ContextCompat.getColor(binding.root.context, R.color.yellow)
                     )
-                } else if (it == BillStatus.COMPLETED) {
-                    binding.txtBillStatus.setTextColor(
+
+                    BillStatus.COMPLETED -> binding.txtBillStatus.setTextColor(
                         ContextCompat.getColor(binding.root.context, R.color.green)
                     )
-                } else if (it == BillStatus.CANCELLED) {
-                    binding.txtBillStatus.setTextColor(
+
+                    BillStatus.CANCELLED -> binding.txtBillStatus.setTextColor(
                         ContextCompat.getColor(binding.root.context, R.color.grey)
                     )
+
+                    else -> {}
                 }
+
                 binding.txtBillStatus.text = it.description
             }
 

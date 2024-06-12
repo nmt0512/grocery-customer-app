@@ -13,14 +13,11 @@ class BillViewPagerAdapter(fragmentActivity: FragmentActivity) :
     }
 
     override fun createFragment(position: Int): Fragment {
-        return if (position == 0) {
-            BillListFragment(mutableListOf(BillStatus.PAID))
-        } else if (position == 1) {
-            BillListFragment(mutableListOf(BillStatus.PREPARED))
-        } else if (position == 2) {
-            BillListFragment(mutableListOf(BillStatus.COMPLETED))
-        } else {
-            BillListFragment(mutableListOf(BillStatus.CANCELLED))
+        return when (position) {
+            0 -> BillListFragment(mutableListOf(BillStatus.PAID))
+            1 -> BillListFragment(mutableListOf(BillStatus.PREPARED))
+            2 -> BillListFragment(mutableListOf(BillStatus.COMPLETED))
+            else -> BillListFragment(mutableListOf(BillStatus.CANCELLED))
         }
     }
 }
