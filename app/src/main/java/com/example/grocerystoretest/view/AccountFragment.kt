@@ -11,7 +11,6 @@ import com.example.grocerystoretest.utils.ApplicationPreference
 import io.kommunicate.Kommunicate
 import io.kommunicate.callbacks.KMLogoutHandler
 
-
 class AccountFragment : BaseFragment<FragmentAccountBinding>() {
 
     private lateinit var logoutConfirmDialog: AlertDialog
@@ -23,7 +22,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>() {
     override fun initView() {
         val userInfo = ApplicationPreference.getInstance(this.requireContext())?.getUserInfo()
         userInfo?.let {
-            binding.txtFullname.text = "Xin chào, ${userInfo?.firstName} ${userInfo?.lastName}"
+            binding.txtFullname.text = "Xin chào, ${it.firstName} ${it.lastName}"
         }
 
         val logoutConfirmDialogListener = DialogInterface.OnClickListener { dialog, which ->

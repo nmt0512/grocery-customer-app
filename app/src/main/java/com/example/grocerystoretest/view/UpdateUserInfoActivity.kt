@@ -30,6 +30,7 @@ class UpdateUserInfoActivity : BaseActivity<ActivityUpdateUserInfoBinding>() {
     override fun initView() {
         userInfoViewModel = UserInfoViewModel(this)
         val userInfo = ApplicationPreference.getInstance(this)?.getUserInfo()
+        binding.txtId.setText(userInfo?.id)
         binding.txtPhoneNumber.setText(userInfo?.phoneNumber)
         binding.txtFirstName.setText(userInfo?.firstName)
         binding.txtLastName.setText(userInfo?.lastName)

@@ -40,52 +40,51 @@ class RecyclerViewBillListAdapter(private val billResponseList: List<BillRespons
 
             val billItemList = billResponse.billItems
 
-            if (billItemList.isNotEmpty()) {
-                if (billItemList[0].productResponse.images.isNotEmpty()) {
-                    Glide.with(binding.root)
-                        .load(billItemList[0].productResponse.images[0])
-                        .centerCrop()
-                        .into(binding.imageViewBill)
-                }
-                val firstBillItem = billItemList.first()
-                binding.txtProduct1.text =
-                    "${firstBillItem.quantity}x ${firstBillItem.productResponse.name}"
+            if (billItemList[0].productResponse.images.isNotEmpty()) {
+                Glide.with(binding.root)
+                    .load(billItemList[0].productResponse.images[0])
+                    .centerCrop()
+                    .into(binding.imageViewBill)
+            }
 
-                if (billItemList.size > 1) {
-                    val secondBillItem = billItemList[1]
-                    binding.txtProduct2.visibility = View.VISIBLE
-                    binding.txtProduct2.text =
-                        "${secondBillItem.quantity}x ${secondBillItem.productResponse.name}"
-                    if (billItemList.size > 2) {
-                        binding.txtOtherProductNumber.visibility = View.VISIBLE
-                        binding.txtOtherProductNumber.text = "+ ${billItemList.size - 2}"
-                    }
-                }
+            val firstBillItem = billItemList.first()
+            binding.txtProduct1.text =
+                "${firstBillItem.quantity}x ${firstBillItem.productResponse.name}"
 
-                binding.txtPickUpTime.text = "Lấy hàng: ${billResponse.pickUpTime}"
-
-                billResponse.status?.let {
-                    if (it == BillStatus.PREPARED) {
-                        binding.txtBillStatus.setTextColor(
-                            ContextCompat.getColor(binding.root.context, R.color.yellow)
-                        )
-                    } else if (it == BillStatus.COMPLETED) {
-                        binding.txtBillStatus.setTextColor(
-                            ContextCompat.getColor(binding.root.context, R.color.green)
-                        )
-                    } else if (it == BillStatus.CANCELLED) {
-                        binding.txtBillStatus.setTextColor(
-                            ContextCompat.getColor(binding.root.context, R.color.grey)
-                        )
-                    }
-                    binding.txtBillStatus.text = it.description
+            if (billItemList.size > 1) {
+                val secondBillItem = billItemList[1]
+                binding.txtProduct2.visibility = View.VISIBLE
+                binding.txtProduct2.text =
+                    "${secondBillItem.quantity}x ${secondBillItem.productResponse.name}"
+                if (billItemList.size > 2) {
+                    binding.txtOtherProductNumber.visibility = View.VISIBLE
+                    binding.txtOtherProductNumber.text = "+ ${billItemList.size - 2}"
                 }
+            }
 
-                binding.root.setOnClickListener {
-                    val intent = Intent(binding.root.context, BillDetailActivity::class.java)
-                    intent.putExtra("billResponse", Gson().toJson(billResponse))
-                    binding.root.context.startActivity(intent)
+            binding.txtPickUpTime.text = "Lấy hàng: ${billResponse.pickUpTime}"
+
+            billResponse.status?.let {
+                if (it == BillStatus.PREPARED) {
+                    binding.txtBillStatus.setTextColor(
+                        ContextCompat.getColor(binding.root.context, R.color.yellow)
+                    )
+                } else if (it == BillStatus.COMPLETED) {
+                    binding.txtBillStatus.setTextColor(
+                        ContextCompat.getColor(binding.root.context, R.color.green)
+                    )
+                } else if (it == BillStatus.CANCELLED) {
+                    binding.txtBillStatus.setTextColor(
+                        ContextCompat.getColor(binding.root.context, R.color.grey)
+                    )
                 }
+                binding.txtBillStatus.text = it.description
+            }
+
+            binding.root.setOnClickListener {
+                val intent = Intent(binding.root.context, BillDetailActivity::class.java)
+                intent.putExtra("billResponse", Gson().toJson(billResponse))
+                binding.root.context.startActivity(intent)
             }
         }
     }
