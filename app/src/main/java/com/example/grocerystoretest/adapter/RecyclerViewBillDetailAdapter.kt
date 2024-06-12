@@ -31,10 +31,12 @@ class RecyclerViewBillDetailAdapter(private val billItemResponseList: List<BillI
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(billItem: BillItemResponse) {
-            Glide.with(binding.root)
-                .load(billItem.productResponse.images[0])
-                .centerCrop()
-                .into(binding.imageViewProduct)
+            if (billItem.productResponse.images.isNotEmpty()) {
+                Glide.with(binding.root)
+                    .load(billItem.productResponse.images[0])
+                    .centerCrop()
+                    .into(binding.imageViewProduct)
+            }
             binding.txtProductName.text = billItem.productResponse.name
             binding.txtQuantity.text = "x${billItem.quantity}"
             binding.txtPrice.text =
