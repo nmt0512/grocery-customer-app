@@ -42,9 +42,7 @@ class BillDetailActivity : BaseActivity<ActivityBillDetailBinding>() {
     private fun bindBill(billResponse: BillResponse) {
         binding.txtBillId.text = "ID: ${billResponse.id}"
         val billItemResponseList = billResponse.billItems
-        billItemResponseList?.let {
-            binding.rvBillItem.adapter = RecyclerViewBillDetailAdapter(it)
-        }
+        binding.rvBillItem.adapter = RecyclerViewBillDetailAdapter(billItemResponseList)
 
         binding.txtTotalPrice.text =
             "Tổng tiền: ${NumberConverterUtil.convertNumberToStringWithDot(billResponse.totalPrice!!)} Đ"
