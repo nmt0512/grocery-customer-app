@@ -9,5 +9,5 @@ data class BillResponse(
     val createdDate: String? = "",
     val status: BillStatus? = null,
     val pickUpTime: String? = "",
-    val billItems: List<BillItemResponse>? = mutableListOf()
+    val billItems: List<BillItemResponse> = mutableListOf()
 )
