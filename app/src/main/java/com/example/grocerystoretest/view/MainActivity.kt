@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import com.example.grocerystoretest.R
@@ -52,16 +53,33 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun startLoginOrHomeActivity() {
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            val accessToken = ApplicationPreference.getInstance(this)?.getAccessToken()
+//            if (accessToken.isNullOrEmpty()) {
+//                startActivity(Intent(this, LoginActivity::class.java))
+//            } else {
+//                startActivity(Intent(this, HomeActivity::class.java))
+//            }
+//            finishAffinity()
+//        }, 1000)
+
         Handler(Looper.getMainLooper()).postDelayed({
-            val accessToken = ApplicationPreference.getInstance(this)?.getAccessToken()
-            if (accessToken.isNullOrEmpty()) {
+            val refreshToken = ApplicationPreference.getInstance(this)?.getRefreshToken()
+            if (refreshToken.isNullOrEmpty()) {
                 startActivity(Intent(this, LoginActivity::class.java))
             } else {
-                startActivity(Intent(this, HomeActivity::class.java))
+                loginViewModel.refreshToken(refreshToken).observe(this) {
+                    if (it) {
+                        startActivity(Intent(this, HomeActivity::class.java))
+                    } else {
+                        Toast.makeText(this, "Phiên đăng nhập đã hết hạn", Toast.LENGTH_SHORT)
+                            .show()
+                        startActivity(Intent(this, LoginActivity::class.java))
+                    }
+                    finishAffinity()
+                }
             }
-            finishAffinity()
-        }, 1000)
-
+        }, 200)
     }
 
     private fun askNotificationPermission() {

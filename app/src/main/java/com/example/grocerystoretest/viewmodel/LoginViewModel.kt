@@ -49,4 +49,35 @@ class LoginViewModel(context: Context) : ViewModel() {
             })
     }
 
+    fun refreshToken(refreshToken: String): MutableLiveData<Boolean> {
+        val isRefreshSuccessLiveData = MutableLiveData<Boolean>()
+        apiService
+            .refreshToken(refreshToken)
+            .enqueue(object : Callback<BaseResponse<LoginResponse>> {
+                override fun onResponse(
+                    call: Call<BaseResponse<LoginResponse>>,
+                    response: Response<BaseResponse<LoginResponse>>
+                ) {
+                    if (response.isSuccessful) {
+                        val refreshResponse = response.body()?.data
+                        refreshResponse?.let {
+                            applicationPreference?.saveToken(
+                                it.refreshToken,
+                                it.accessToken
+                            )
+                            isRefreshSuccessLiveData.value = true
+                        }
+                    } else {
+                        isRefreshSuccessLiveData.value = false
+                    }
+                }
+
+                override fun onFailure(call: Call<BaseResponse<LoginResponse>>, t: Throwable) {
+                    isRefreshSuccessLiveData.value = false
+                }
+
+            })
+        return isRefreshSuccessLiveData
+    }
+
 }
